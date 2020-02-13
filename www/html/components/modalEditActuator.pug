@@ -1,0 +1,34 @@
+script(src="/js/components/modalEditActuator.js")
+
+.modal.fade#modalEditActuator(tabindex="-1" role="dialog" aria-labelledby="modalEditActuatorLabel" aria-hidden="true")
+	.modal-dialog(role="document")
+		.modal-content
+			.modal-header
+				h5.modal-title#modalEditActuatorLabel New Actuator
+				button.close(data-dismiss="modal" aria-label="Close" onclick="emptEditActuatorForm()")
+			
+			.modal-body
+				form(enctype="application/json")
+					.form-group
+						label Actuator Name
+						input.form-control#modalEditActuator-actuatorname(type="text", name="actuatorname" placeholder="Lights(Bathroom)")
+						.invalid-feedback Please check your actuator name
+				
+					.form-group
+						label Actuator Type
+						input.form-control#modalEditActuator-type(type="text", name="type" placeholder="Ligths")
+						.invalid-feedback Please check your actuator type
+
+					.form-group
+						label Arduino ID
+						input.form-control#modalEditActuator-arduinoid(type="number", name="arduinoid" placeholder="12")
+						.invalid-feedback Please check your Arduino ID
+
+					.form-group
+						label Arduino Value ID
+						input.form-control#modalEditActuator-arduinovalueid(type="text", name="arduinovalueid" placeholder="LIG")
+						.invalid-feedback Please check your Arduino Value ID
+						
+			.modal-footer
+				button.btn.btn-secondary(data-dismiss="modal" onclick="emptyEditActuatorForm()") Close
+				button.btn.btn-primary(onclick="saveEditActuator()") Save Actuator
