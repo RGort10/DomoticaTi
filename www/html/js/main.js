@@ -20,14 +20,15 @@ function makeActuatorTable() {
     table +='<th scope="col">Actions</th>'
     table +='</tr></thead><tbody>'
     $.each(data.data, (index, actuator) => {
-      table +='<tr>'
+      table +=`<tr>`
       table +=`<th scope="row">${actuator.actuatorid}</th>`
       table +=`<td>${actuator.actuatorname}</td>`
       table +=`<td>${actuator.type}</td>`
       table +=`<td>${actuator.value}</td>`
       table +=`<td>${actuator.arduinoid}</td>`
       table +=`<td>${actuator.arduinovalueid}</td>`
-      table +=`<td><button class="btn btn-danger" onclick="deleteActuator(${actuator.actuatorid})"><i class="fas fa-trash-alt"></i> Delete</button></td>`
+			table +=`<td><button class="btn btn-danger" onclick="deleteActuator(${actuator.actuatorid})"><i class="fas fa-trash-alt"></i> Delete</button>`
+			table +=`<button class="btn btn-primary" onclick="editActuator(${actuator.actuatorid})"><i class="fas fa-pencil-alt"></i> Edit</button></td>`
       table +='</tr>'
     })
     table += '</tbody></table>'

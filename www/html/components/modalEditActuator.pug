@@ -4,7 +4,8 @@ script(src="/js/components/modalEditActuator.js")
 	.modal-dialog(role="document")
 		.modal-content
 			.modal-header
-				h5.modal-title#modalEditActuatorLabel New Actuator
+				h5.modal-title#modalEditActuatorLabel Edit Actuator 
+					span#modalEditActuator-actuatorid
 				button.close(data-dismiss="modal" aria-label="Close" onclick="emptEditActuatorForm()")
 			
 			.modal-body
@@ -30,5 +31,5 @@ script(src="/js/components/modalEditActuator.js")
 						.invalid-feedback Please check your Arduino Value ID
 						
 			.modal-footer
-				button.btn.btn-secondary(data-dismiss="modal" onclick="emptyEditActuatorForm()") Close
+				button.btn.btn-secondary(data-dismiss="modal" onclick="emptyEditActuatorForm()") Cancel
 				button.btn.btn-primary(onclick="saveEditActuator()") Save Actuator

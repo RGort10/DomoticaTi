@@ -5,6 +5,7 @@
 
 int validateActuator(struct actuator);
 void createInsertQueryActuator(char*, struct actuator);
+void createUpdateQueryActuator(char*, struct actuator);
 struct actuator readActuatorJSON();
 
 int CONTENT_SIZE = 0;
@@ -44,17 +45,32 @@ int main(int argc, const char* argv[], char* env[]) {
       const char* actuatorid = argv[1];
 
       if(atoi(actuatorid) != 0 && strlen(actuatorid) > 0) {
-        char* query = malloc(100);
+        char* query = malloc(150);
         sprintf(query, "DELETE FROM actuator WHERE actuatorid=%d", atoi(actuatorid));
         executeQuery(query);
 
       } else {
         errorResponse(400, "validation vailed");
       }
-    } else if(strcmp(METHOD, "PUT") == 0) {
+
+    } else if(strcmp(METHOD, "GET") == 0) {
+			const char* actuatorid = argv[1];
+      if(atoi(actuatorid) != 0 && strlen(actuatorid) > 0) {
+				char* query = malloc(150);
+        sprintf(query, "SELECT * FROM actuator WHERE actuatorid = %d", atoi(actuatorid));
+				selectQueryJSON(query);
+			}
+
+		} else if(strcmp(METHOD, "PUT") == 0) {
       struct actuator actuator = readActuatorJSON();
-      errorResponse(501, "This function will be implementend soon!");
-      // TODO MAKE THE UPDATE
+
+			const char* actuatorid = argv[1];
+      if(atoi(actuatorid) != 0 && strlen(actuatorid) > 0 && validateActuator(actuator) > 0) {
+				actuator.actuatorid = atoi(actuatorid);
+				char* query = malloc(200);
+        createUpdateQueryActuator(query, actuator);
+        executeQuery(query);
+			}
     } else {
       errorResponse(400, "check request url");
     }
@@ -119,9 +135,8 @@ int validateActuator(struct actuator actuator) {
 void createInsertQueryActuator(char* query, struct actuator actuator) {
   strcpy(query, "INSERT INTO actuator (arduinoid, value, type, arduinovalueid, actuatorname) VALUES(");
 
-  sprintf(query, "%s%d", query, actuator.arduinoid);
-  strcat(query, ",");
-  sprintf(query, "%s%d", query, actuator.value);
+  sprintf(query, "%s%d,", query, actuator.arduinoid);
+	sprintf(query, "%s%d", query, actuator.value);
   strcat(query, ",'");
   strcat(query, actuator.type);
   strcat(query, "','");
@@ -129,6 +144,20 @@ void createInsertQueryActuator(char* query, struct actuator actuator) {
   strcat(query, "','");
   strcat(query, actuator.actuatorname);
   strcat(query, "')");
+}
+
+void createUpdateQueryActuator(char* query, struct actuator actuator) {
+	strcpy(query, "UPDATE actuator SET arduinoid = ");
+
+  sprintf(query, "%s%d", query, actuator.arduinoid);
+  strcat(query, ", type = '");
+  strcat(query, actuator.type);
+  strcat(query, "', arduinovalueid = '");
+  strcat(query, actuator.arduinovalueid);
+  strcat(query, "', actuatorname = '");
+  strcat(query, actuator.actuatorname);
+  strcat(query, "' WHERE actuatorid = ");
+	sprintf(query, "%s%d", query, actuator.actuatorid);
 }
 
 struct actuator readActuatorJSON() {
@@ -155,10 +184,6 @@ struct actuator readActuatorJSON() {
       switch (index) { // starts with 1 because user can't make there own id.
       case 1:
         newActuator.arduinoid = atoi(retrievedData);
-        break;
-      
-      case 2:
-        newActuator.value = atoi(retrievedData);
         break;
       
       case 3:

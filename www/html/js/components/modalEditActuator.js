@@ -1,5 +1,6 @@
 function saveEditActuator() {
 	const actuatorBody = {
+		actuatorid: 	$('#modalEditActuator-actuatorid').html(),
 		actuatorname: 	$('#modalEditActuator-actuatorname').val(),
 		type: 					$('#modalEditActuator-type').val(),
 		arduinoid: 			$('#modalEditActuator-arduinoid').val(),
@@ -8,13 +9,13 @@ function saveEditActuator() {
 
 	if (1===1){//validateActuator(actuatorBody) || 1 === 1) {
 		$.ajax({
-			method: 'POST',
-			url: '/cgi-bin/api/actuator.cgi',
+			method: 'PUT',
+			url: '/cgi-bin/api/actuator.cgi?' + actuatorBody.actuatorid,
 			data: JSON.stringify(actuatorBody)
 		})
 			.done(() => {
-				emptyNewActuatorForm()
-				$('modalEditActuator').modal('toggle')
+				emptyEditActuatorForm()
+				$('#modalEditActuator').modal('toggle')
 				makeActuatorTable()
 			})
 			.fail((err) => {
@@ -31,6 +32,22 @@ function saveEditActuator() {
 				}
 			})
 	}
+}
+
+function editActuator(id) {
+	$.ajax({
+		method: "GET",
+		url: '/cgi-bin/api/actuator.cgi?' + id
+	})
+		.done(data => {
+			const actuator = data.data[0]
+			$('#modalEditActuator').modal('toggle')
+			$(`#modalEditActuator-actuatorid`).html(actuator.actuatorid)
+			$(`#modalEditActuator-actuatorname`).val(actuator.actuatorname)
+			$(`#modalEditActuator-type`).val(actuator.type)
+			$(`#modalEditActuator-arduinoid`).val(actuator.arduinoid)
+			$(`#modalEditActuator-arduinovalueid`).val(actuator.arduinovalueid)
+		})
 }
 
 function emptyEditActuatorForm() {
