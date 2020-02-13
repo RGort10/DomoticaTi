@@ -1,0 +1,34 @@
+script(src="/js/components/modalActuator.js")
+link(rel="stylesheet", href="css/main.css")
+
+.modal.fade#modalActuator(tabindex="-1" role="dialog" aria-labelledby="modalActuatorLabel" aria-hidden="true")
+	.modal-dialog(style="width: 90%; min-width: 400px; max-width: initial" role="document")
+		.modal-content
+			.modal-header
+				h5.modal-title#modalNewActuatorLabel Actuator
+				button.close(data-dismiss="modal" aria-label="Close" onclick="closeActuator()")
+			
+			.modal-body
+				table.table.table-borderless
+					tbody.modalActuator
+						tr
+							th Name: 
+							td#modalActuator-actuatorname Test Example 2
+
+						tr
+							th Type: 
+							td#modalActuator-type Test
+						
+						tr
+							th Value: 
+							td#modalActuator-value 0
+						
+						tr
+							th Arduino Name: 
+							td#modalActuator-arduinoname Arduino Boven
+						
+						tr
+							th Arduino Component ID: 
+							td#modalActuator-arduinocomponentid TES
+						
+				#modalActuatorHistory

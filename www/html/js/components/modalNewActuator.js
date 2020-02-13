@@ -13,7 +13,7 @@ function saveActuator() {
 			data: JSON.stringify(actuatorBody)
 		})
 			.done(() => {
-				$('modalNewActuator').modal('toggle')
+				$('#modalNewActuator').modal('toggle')
 				emptyNewActuatorForm()
 				makeActuatorTable()
 			})
