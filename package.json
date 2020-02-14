@@ -2,7 +2,6 @@
   "name": "domoticati",
   "version": "1.0.0",
   "description": "Project Domotica Ti",
-  "main": " ",
   "scripts": {
     "test": " "
   },
@@ -15,5 +14,8 @@
   "bugs": {
     "url": "https://github.com/RGort10/DomoticaTi/issues"
   },
-  "homepage": "https://github.com/RGort10/DomoticaTi#readme"
+  "homepage": "https://github.com/RGort10/DomoticaTi#readme",
+  "dependencies": {
+    "pug": "^2.0.4"
+  }
 }
