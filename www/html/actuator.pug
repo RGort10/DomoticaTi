@@ -1,0 +1,16 @@
+doctype
+html(lang='en')
+	head
+		meta(charset='utf-8')
+		title DomoticaTi
+		include includes.pug
+
+	body(onload="init()")
+		include components/navbar.pug
+
+		include components/modalNewActuator.pug
+		button.btn.btn-dark(data-toggle="modal" data-target="#modalNewActuator") New Actuator
+
+		include components/modalEditActuator.pug
+		include components/modalActuator.pug
+		#actuatorTable

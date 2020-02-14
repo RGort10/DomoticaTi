@@ -1,0 +1,21 @@
+{
+  "name": "domoticati",
+  "version": "1.0.0",
+  "description": "Project Domotica Ti",
+  "scripts": {
+    "test": " "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RGort10/DomoticaTi.git"
+  },
+  "author": "Renzo Gort, Justin Slikker, Olav Mulder",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RGort10/DomoticaTi/issues"
+  },
+  "homepage": "https://github.com/RGort10/DomoticaTi#readme",
+  "dependencies": {
+    "pug": "^2.0.4"
+  }
+}
