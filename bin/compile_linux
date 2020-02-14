@@ -11,6 +11,13 @@ ar -rc libdomoticati.a *.o
 echo Do something with a
 ranlib libdomoticati.a
 
+echo move to arduino dir
+cd ../arduino
+
+echo compile arduino controller
+gcc sensor.c -o sensor.cgi -L../library -ldomoticati $(mariadb_config --libs)
+
+
 echo move to api dir
 cd ../api
 
