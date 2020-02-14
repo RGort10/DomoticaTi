@@ -1,4 +1,4 @@
-#include "../api/tables.h"
+#include "tables.h"
 #include "../library/domoticaTi.h"
 #include <mariadb/mysql.h>
 
@@ -20,12 +20,8 @@ int main(int argc, const char* argv[], char* env[]) {
 
   if(argc == 1) {
 
-    if(strcmp(METHOD, "POST") == 0) {
-      char* body = malloc(CONTENT_SIZE + 10);
-      char* query = malloc(CONTENT_SIZE + 150);
-      getSensorBody(body);
-      sprintf(query, "INSERT INTO sensorhistory (sensorhistoryid, value, date, time) VALUES (12, '%s', CURDATE() + 0, CURTIME() + 0)", body);
-      executeQuery(query);
+    if(strcmp(METHOD, "GET") == 0) {
+      selectQueryJSON("SELECT * FROM sensorhistory");
     } else {
       errorResponse(400, "check request url");
     }

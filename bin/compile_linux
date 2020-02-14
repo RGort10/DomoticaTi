@@ -23,6 +23,7 @@ cd ../api
 
 echo compile c files
 gcc actuator.c -o actuator.cgi -L../library -ldomoticati $(mariadb_config --libs)
+gcc sensorHistory.c -o sensorHistory.cgi -L../library -ldomoticati $(mariadb_config --libs)
 gcc arduino.c -o arduino.cgi -L../library -ldomoticati $(mariadb_config --libs)
 
 echo move to www/html
