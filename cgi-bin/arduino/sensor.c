@@ -24,7 +24,7 @@ int main(int argc, const char* argv[], char* env[]) {
       char* body = malloc(CONTENT_SIZE + 10);
       char* query = malloc(CONTENT_SIZE + 150);
       getSensorBody(body);
-      sprintf(query, "INSERT INTO sensorhistory (sensorhistoryid, value, date, time) VALUES (12, '%s', CURDATE() + 0, CURTIME() + 0)", body);
+      sprintf(query, "INSERT INTO sensorhistory (sensorid, value, date, time) VALUES (12, '%s', CURDATE() + 0, CURTIME() + 0)", body);
       executeQuery(query);
     } else {
       errorResponse(400, "check request url");
