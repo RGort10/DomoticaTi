@@ -4,14 +4,15 @@ html(lang='en')
     meta(charset='utf-8')
     title DomoticaTi
     include includes.pug
+    script(src="/js/sensor.js")
 
-  body(onload="init()")
+  body(onload="initSensor()")
     include components/navbar.pug
 
-    //include components/modalNewActuator.pug
-    button.btn.btn-dark(data-toggle="modal" data-target="#modalSensor") New Sensor
+    include components/modalNewSensor.pug
+    button.btn.btn-dark(data-toggle="modal" data-target="#modalNewSensor") New Sensor
 
-    //include components/modalEditActuator.pug
+    include components/modalEditSensor.pug
     include components/modalSensor.pug
 
     table.table
@@ -22,5 +23,6 @@ html(lang='en')
           th Arduino ID
           th Arduino Component ID
           th Unit
+          th Actions
 
-      tbody#arduinoTable
+      tbody#sensorTable

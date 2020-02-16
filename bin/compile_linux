@@ -23,6 +23,8 @@ cd ../api
 
 echo compile c files
 gcc actuator.c -o actuator.cgi -L../library -ldomoticati $(mariadb_config --libs)
+gcc sensor.c -o sensor.cgi -L../library -ldomoticati $(mariadb_config --libs)
+gcc login.c -o login.cgi -L../library -ldomoticati $(mariadb_config --libs)
 gcc sensorHistory.c -o sensorHistory.cgi -L../library -ldomoticati $(mariadb_config --libs)
 gcc arduino.c -o arduino.cgi -L../library -ldomoticati $(mariadb_config --libs)
 
@@ -32,4 +34,10 @@ cd ../../www/html
 echo compile pug files
 pug actuator.pug
 pug arduino.pug
+pug login.pug
 pug sensor.pug
+
+echo compile scss files
+cd css
+
+sass main.scss main.css

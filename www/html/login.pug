@@ -1,0 +1,23 @@
+doctype
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    title DomoticaTi
+    include includes.pug
+
+  body()
+    include components/navbar.pug
+    br
+    button.btn.btn-dark(onclick="login()") Login
+
+    form(style="max-width: 400px; width: 100%; margin: 0, auto")
+      h1 Please Sign In
+      .form-group
+        label Email Address
+        input.form-control(type="email" placeholder="example@example.com")
+      
+      .form-group
+        label Password
+        input.form-control(type="password")
+
+      button.btn.btn-primary(onclick="login()") Login

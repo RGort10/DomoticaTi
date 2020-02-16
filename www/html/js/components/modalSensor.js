@@ -4,24 +4,21 @@ function getSensor(id) {
 		url: '/cgi-bin/api/sensor.cgi?' + id
 	})
 		.done(data => {
-			const actuator = data.data[0]
-			$('#modalActuator').modal('toggle')
-			$(`#modalActuator-actuatorname`).html(actuator.actuatorname)
-			$(`#modalActuator-value`).html(actuator.value)
-			$(`#modalActuator-type`).html(actuator.type)
-			$(`#modalActuator-arduinoid`).html(actuator.arduinoid)
-			$(`#modalActuator-arduinocomponentid`).html(actuator.arduinovalueid)
+			const sensor = data.data[0]
+			$(`#modalSensor-sensorname`).html(sensor.sensorname)
+			$(`#modalSensor-unit`).html(sensor.unit == " " ? 'none' : sensor.unit)
+			$(`#modalSensor-arduinoid`).html(sensor.arduinoid)
+			$(`#modalSensor-arduinocomponentid`).html(sensor.arduinocomponentid)
+      $('#modalSensor').modal('toggle')
+      getSensorHistory(id)
 		})
 }
 
 
-function getSensorHistory() {
-  setTimeout(() => {
-    getSensorHistory()
-  }, 10000)
+function getSensorHistory(id) {
   $.ajax({
 		method: "GET",
-		url: '/cgi-bin/api/sensorHistory.cgi'
+		url: '/cgi-bin/api/sensor.cgi?last+' + id
   })
     .done(data => {
       let table = '';

@@ -1,0 +1,34 @@
+script(src="/js/components/modalNewSensor.js")
+
+.modal.fade#modalNewSensor(tabindex="-1" role="dialog" aria-labelledby="modalNewSensorLabel" aria-hidden="true")
+	.modal-dialog(role="document")
+		.modal-content
+			.modal-header
+				h5.modal-title#modalNewSensorLabel New Sensor
+				button.close(data-dismiss="modal" aria-label="Close" onclick="emptyNewSensorForm()")
+			
+			.modal-body
+				form(enctype="application/json")
+					.form-group
+						label Sensor Name
+						input.form-control#modalNewSensor-sensorname(type="text", name="sensorname" placeholder="Humidity Sensor")
+						.invalid-feedback Please check your sensor name
+				
+					.form-group
+						label Sensor unit(type 'none' for no unit)
+						input.form-control#modalNewSensor-unit(type="text", name="unit" placeholder="%")
+						.invalid-feedback Please check your sensor unit
+
+					.form-group
+						label Arduino ID
+						input.form-control#modalNewSensor-arduinoid(type="number", name="arduinoid" placeholder="12")
+						.invalid-feedback Please check your Arduino ID
+
+					.form-group
+						label Arduino Component ID
+						input.form-control#modalNewSensor-arduinocomponentid(type="text", name="arduinocomponentid" placeholder="HUM")
+						.invalid-feedback Please check your Arduino Component ID
+						
+			.modal-footer
+				button.btn.btn-secondary(data-dismiss="modal" onclick="emptyNewSensorForm()") Close
+				button.btn.btn-primary(onclick="saveSensor()") Save Actuator

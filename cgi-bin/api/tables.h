@@ -17,10 +17,26 @@ FOREIGN KEY (arduinoid) REFERENCES arduino(arduinoid));"
 
 struct actuator
 {
-  int actuatorid;
-  int arduinoid;
+  unsigned int actuatorid;
+  unsigned int arduinoid;
   int value;
   char type[ACTUATOR_FIELD_TYPE_SIZE];
   char arduinovalueid[ACTUATOR_FIELD_ARDUINOVALUEID_SIZE];
   char actuatorname[ACTUATOR_FIELD_ACTUATORNAME_SIZE];
+};
+
+const char SENSOR_FIELD_NAMES[][30] = {"sensorid", "sensorname", "unit", "arduinocomponentid", "arduinoid"};
+
+#define SENSOR_FIELDS 5
+#define SENSOR_FIELD_UNIT_SIZE 5
+#define SENSOR_FIELD_ARDUINOCOMPONENTID_SIZE 5
+#define SENSOR_FIELD_SENSORNAME_SIZE 50
+
+struct sensor
+{
+  unsigned int sensorid;
+  char sensorname[SENSOR_FIELD_SENSORNAME_SIZE];
+  char unit[SENSOR_FIELD_UNIT_SIZE];
+  char arduinocomponentid[SENSOR_FIELD_ARDUINOCOMPONENTID_SIZE];
+  unsigned int arduinoid;
 };

@@ -1,10 +1,11 @@
 function init() {
   makeActuatorTable()
+  setInterval(() => {
+    makeActuatorTable()
+  }, 10000)
 }
 
-setInterval(() => {
-  makeActuatorTable()
-}, 10000)
+
 
 function makeActuatorTable() {
   getActuators()
@@ -59,3 +60,25 @@ function deleteActuator(id) {
       makeActuatorTable()
     })
 }
+
+function login() {
+  let xhr = $.ajax({
+    method: "GET",
+    url: "/cgi-bin/api/login.cgi"
+  })
+    .done(() => {
+      window.location.assign("/sensor.html");
+    })
+}
+
+let oldXHROpen = window.XMLHttpRequest.prototype.open;window.XMLHttpRequest.prototype.open = function(method, url, async, user, password) {
+  // do something with the method, url and etc.
+  this.addEventListener('load', function() {
+   // do something with the response text
+   if(this.status === 401) {
+    window.location.assign('/login.html')
+   }
+  });
+                
+  return oldXHROpen.apply(this, arguments);
+ }

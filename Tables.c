@@ -40,12 +40,12 @@ ArduinoName VARCHAR(50) NOT NULL)"))
   return 0;
 }
 
-  if(mysql_query(conn, "CREATE TABLE IF NOT EXISTS Sensor(SensorID INT PRIMARY KEY AUTO_INCREMENT,\
-ArduinoID INT NOT NULL,\
-SensorName VARCHAR(50) NOT NULL,\
-Eenheid VARCHAR(5) NOT NULL,\
-Arduino_valueID INT NOT NULL,\
-FOREIGN KEY(ArduinoID) REFERENCES Arduino(ArduinoID))"))
+  if(mysql_query(conn, "CREATE TABLE IF NOT EXISTS sensor(sensorid INT unsigned PRIMARY KEY AUTO_INCREMENT,\
+arduinoid INT unsigned NOT NULL,\
+sensorname VARCHAR(50) NOT NULL,\
+unit VARCHAR(5) NOT NULL,\
+arduinocomponentid varchar(5) NOT NULL,\
+FOREIGN KEY(arduinoid) REFERENCES Arduino(ArduinoID))"))
 {
   printf("Failed to execute table Sensor . Error %s\n", mysql_error(conn));
   return 0;

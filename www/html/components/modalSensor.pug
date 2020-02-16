@@ -10,26 +10,26 @@ link(rel="stylesheet", href="css/main.css")
       
       .modal-body
         table.table.table-borderless
-          tbody.modalSensor
+          tbody.modalInfo
             tr
-              th Name: RFID sensor Boven
+              th Name:
               td#modalSensor-sensorname
           
             tr
-              th Unit: -
+              th Unit:
               td#modalSensor-unit
             
             tr
-              th Arduino ID:  12
+              th Arduino ID:
               td#modalSensor-arduinoid
 
             tr
-              th Arduino Component ID: RFI
+              th Arduino Component ID:
               td#modalSensor-arduinocomponentid
             
-            button.btn.btn-dark(onclick="getSensorHistory()") WHAAA
-            br
-            br
+        
+        span 
+          strong Sensor History(Last 25 Records): 
 
         table.table
           thead.thead-dark
