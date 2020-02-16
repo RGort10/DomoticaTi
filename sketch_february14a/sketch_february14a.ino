@@ -9,6 +9,7 @@ MFRC522 mfrc522(SS_PIN, RST_PIN);
 
 char previousKey[50];
 unsigned int nextKeyTime;
+bool switchedOFF = true;
 
 byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 
@@ -25,6 +26,8 @@ void setLOCDuration();
 void succesResponse(EthernetClient client);
 
 void setup() {
+    pinMode(6, OUTPUT);
+    pinMode(7, OUTPUT);
 
     Serial.begin(9600);
     while (!Serial);
@@ -158,6 +161,16 @@ void loop() {
         Serial.write(buffer, len); // show in the serial monitor (slows some boards)
     }
 
+    if(nextKeyTime < (unsigned int)millis()) {
+        nextKeyTime = 0;
+    }
+
+    if((unsigned int) millis() > nextKeyTime && switchedOFF == false) {
+        switchedOFF = true;
+        digitalWrite(6, LOW);
+        digitalWrite(7, LOW);
+    }
+
     if ( ! mfrc522.PICC_IsNewCardPresent())
         return;
 
@@ -183,9 +196,13 @@ void dump_byte_array(byte *buffer, byte bufferSize) {
         serverRequest(key+1, "POST /cgi-bin/arduino/sensor.cgi");
         sprintf(previousKey, key);
         nextKeyTime= millis() + 5000;
+        digitalWrite(6,HIGH);
     } else {
         Serial.println("Card already used in the last 5 seconds!");
+        Serial.println(nextKeyTime);
+        digitalWrite(7, HIGH);
     }
+    switchedOFF = false;
     mfrc522.PICC_HaltA();       // Halt PICC
 
 }

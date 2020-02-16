@@ -1,0 +1,41 @@
+script(src="/js/components/modalSensor.js")
+link(rel="stylesheet", href="css/main.css")
+
+.modal.fade#modalSensor(tabindex="-1" role="dialog" aria-labelledby="modalSensorLabel" aria-hidden="true")
+  .modal-dialog(style="width: 90%; min-width: 400px; max-width: initial" role="document")
+    .modal-content
+      .modal-header
+        h5.modal-title#modalNewActuatorLabel Sensor
+        button.close(data-dismiss="modal" aria-label="Close" onclick="closeActuator()")
+      
+      .modal-body
+        table.table.table-borderless
+          tbody.modalSensor
+            tr
+              th Name: RFID sensor Boven
+              td#modalSensor-sensorname
+          
+            tr
+              th Unit: -
+              td#modalSensor-unit
+            
+            tr
+              th Arduino ID:  12
+              td#modalSensor-arduinoid
+
+            tr
+              th Arduino Component ID: RFI
+              td#modalSensor-arduinocomponentid
+            
+            button.btn.btn-dark(onclick="getSensorHistory()") WHAAA
+            br
+            br
+
+        table.table
+          thead.thead-dark
+            tr
+              th Date
+              th Time
+              th Value
+
+          tbody#modalSensorHistory
