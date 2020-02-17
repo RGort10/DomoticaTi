@@ -41,3 +41,11 @@ int getContentSize(char**);
 */
 
 void removeBadCharacters(char*);
+
+/**
+ * Login
+*/
+
+void getLoginNeeds(char**, char*, char*);
+int searchLoginSession(char*, char**);
+void searchLogin(char**);

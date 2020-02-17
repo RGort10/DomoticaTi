@@ -11,7 +11,7 @@ struct actuator readActuatorJSON();
 int CONTENT_SIZE = 0;
 
 int main(int argc, const char* argv[], char* env[]) {
-
+  searchLogin(env);
 
   char METHOD[10];
   CONTENT_SIZE = getContentSize(env);
@@ -92,12 +92,12 @@ int validateActuator(struct actuator actuator) {
   }
   
   if(actuator.arduinoid > 0) { //uncomment following piece when arduino table is active.
-    /*char* query = malloc(100);
-    char* response = malloc(2000);
-    sprintf(query, "SELECT id FROM arduino WHERE id = %d", actuator.actuatorid);
-    if(selectQueryJSON(response, query) <= 0) {
-      return -1;
-    }*/
+    char* query = malloc(100);
+    sprintf(query, "SELECT count(*) FROM arduino WHERE arduinoid = %d", actuator.arduinoid);
+    if(!countRecords(query)) {
+      strncpy(response[1][1], "false", 50);
+      validation--;
+    }
   } else {
     strncpy(response[1][1], "false", 50);
     validation--;
@@ -161,7 +161,7 @@ void createUpdateQueryActuator(char* query, struct actuator actuator) {
 }
 
 struct actuator readActuatorJSON() {
-  struct actuator newActuator = {-1,-1,-1,"","",""}; //define all elements so we can validate the struct
+  struct actuator newActuator = {-1,-1,0,"","",""}; //define all elements so we can validate the struct
   
   char* data = malloc(CONTENT_SIZE+10);
   int index;

@@ -5,53 +5,10 @@
 
 int validateSensor(struct sensor);
 void createInsertQuerySensor(char*, struct sensor);
-void createUpdateQueryActuator(char*, struct actuator);
+void createUpdateQuerySensor(char*, struct sensor);
 struct sensor readSensorJSON();
 
 int CONTENT_SIZE = 0;
-
-void getLoginNeeds(char** env, char* remoteAddress, char* userAgent) {
-  int index = 0;
-  while(env[index] != NULL) {
-    if(strncmp(env[index], "REMOTE_ADDR=", 12) == 0) {
-      strncpy(remoteAddress, env[index]+12, 99);
-    } else if (strncmp(env[index], "HTTP_USER_AGENT=", 16) == 0) {
-      strncpy(userAgent, env[index]+16, 249);
-    }
-    index++;
-  }
-}
-
-int searchLoginSession(char* id, char** env) {
-  char remoteAddress[100];
-  char userAgent[250];
-  char query[1000];
-
-  getLoginNeeds(env, remoteAddress, userAgent);
-
-  removeBadCharacters(remoteAddress);
-  removeBadCharacters(userAgent);
-
-  sprintf(query, "SELECT count(*) FROM usersessions WHERE sessioncookie = %d AND useragent = '%s' AND remoteaddress = '%s' AND time > UNIX_TIMESTAMP() - 84600000 AND logout = false", atoi(id), userAgent, remoteAddress);
-  return countRecords(query);
-}
-
-void searchLogin(char* env[]) {
-  int index = 0, loggedIn = 0;
-  while(env[index] != NULL) {
-    if(strncmp(env[index], "HTTP_COOKIE=SESSIONID=", 22) == 0) {
-      char* sessionID = malloc(15);
-      memcpy(sessionID, env[index]+22, 10);
-      loggedIn = searchLoginSession(sessionID, env);
-      break;
-    }
-    index++;
-  }
-  if(loggedIn < 1) {
-    printf("STATUS: 401\n");
-    exit(0);
-  }
-}
 
 int main(int argc, const char* argv[], char* env[]) {
 
@@ -84,37 +41,37 @@ int main(int argc, const char* argv[], char* env[]) {
       errorResponse(400, "check request url");
     }
   } else if(argc == 2) { // one data
-    /*if(strcmp(METHOD, "DELETE") == 0) {
+    if(strcmp(METHOD, "DELETE") == 0) {
 
-      const char* actuatorid = argv[1];
+      const char* sensorid = argv[1];
 
-      if(atoi(actuatorid) != 0 && strlen(actuatorid) > 0) {
+      if(atoi(sensorid) != 0 && strlen(sensorid) > 0) {
         char* query = malloc(150);
-        sprintf(query, "DELETE FROM actuator WHERE actuatorid=%d", atoi(actuatorid));
+        sprintf(query, "DELETE FROM sensor WHERE sensorid=%d", atoi(sensorid));
         executeQuery(query);
 
       } else {
         errorResponse(400, "validation vailed");
       }
 
-    } else */if(strcmp(METHOD, "GET") == 0) {
-			const char* sensorid = argv[1];
+    } else if(strcmp(METHOD, "GET") == 0) {
+      const char* sensorid = argv[1];
       if(atoi(sensorid) != 0 && strlen(sensorid) > 0) {
-				char* query = malloc(150);
+        char* query = malloc(150);
         sprintf(query, "SELECT * FROM sensor WHERE sensorid = %d", atoi(sensorid));
-				selectQueryJSON(query);
-			}
+        selectQueryJSON(query);
+      }
 
-		/*} else if(strcmp(METHOD, "PUT") == 0) {
-      struct actuator actuator = readActuatorJSON();
+    } else if(strcmp(METHOD, "PUT") == 0) {
+      struct sensor sensor = readSensorJSON();
 
-			const char* actuatorid = argv[1];
-      if(atoi(actuatorid) != 0 && strlen(actuatorid) > 0 && validateActuator(actuator) > 0) {
-				actuator.actuatorid = atoi(actuatorid);
-				char* query = malloc(200);
-        createUpdateQueryActuator(query, actuator);
+      const char* sensorid = argv[1];
+      if(atoi(sensorid) != 0 && strlen(sensorid) > 0 && validateSensor(sensor) > 0) {
+        sensor.sensorid = atoi(sensorid);
+        char* query = malloc(200);
+        createUpdateQuerySensor(query, sensor);
         executeQuery(query);
-			}*/
+      }
     } else {
       errorResponse(400, "check request url");
     }
@@ -163,13 +120,13 @@ int validateSensor(struct sensor sensor) {
     validation--;
   }
 
-  if(sensor.arduinoid > 0) { //uncomment following piece when arduino table is active.
-    /*char* query = malloc(100);
-    char* response = malloc(2000);
-    sprintf(query, "SELECT id FROM arduino WHERE id = %d", sensor.sensorid);
-    if(selectQueryJSON(response, query) <= 0) {
-      return -1;
-    }*/
+  if(sensor.arduinoid > 0) {
+    char* query = malloc(100);
+    sprintf(query, "SELECT count(*) FROM arduino WHERE arduinoid = %d", sensor.arduinoid);
+    if(!countRecords(query)) {
+      strncpy(response[4][1], "false", 50);
+      validation--;
+    }
   } else {
     strncpy(response[4][1], "false", 50);
     validation--;
@@ -200,18 +157,18 @@ void createInsertQuerySensor(char* query, struct sensor sensor) {
   strcat(query, "')");
 }
 
-void createUpdateQueryActuator(char* query, struct actuator actuator) {
-	strcpy(query, "UPDATE actuator SET arduinoid = ");
+void createUpdateQuerySensor(char* query, struct sensor sensor) {
+  strcpy(query, "UPDATE sensor SET arduinoid = ");
 
-  sprintf(query, "%s%d", query, actuator.arduinoid);
-  strcat(query, ", type = '");
-  strcat(query, actuator.type);
-  strcat(query, "', arduinovalueid = '");
-  strcat(query, actuator.arduinovalueid);
-  strcat(query, "', actuatorname = '");
-  strcat(query, actuator.actuatorname);
-  strcat(query, "' WHERE actuatorid = ");
-	sprintf(query, "%s%d", query, actuator.actuatorid);
+  sprintf(query, "%s%d", query, sensor.arduinoid);
+  strcat(query, ", unit = '");
+  strcat(query, sensor.unit);
+  strcat(query, "', arduinocomponentid = '");
+  strcat(query, sensor.arduinocomponentid);
+  strcat(query, "', sensorname = '");
+  strcat(query, sensor.sensorname);
+  strcat(query, "' WHERE sensorid = ");
+  sprintf(query, "%s%d", query, sensor.sensorid);
 }
 
 struct sensor readSensorJSON() {

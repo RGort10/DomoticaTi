@@ -1,35 +1,36 @@
-script(src="/js/components/modalEditActuator.js")
+script(src="/js/components/modalEditSensor.js")
 
-.modal.fade#modalEditActuator(tabindex="-1" role="dialog" aria-labelledby="modalEditActuatorLabel" aria-hidden="true")
-	.modal-dialog(role="document")
-		.modal-content
-			.modal-header
-				h5.modal-title#modalEditActuatorLabel Edit Actuator 
-					span#modalEditActuator-actuatorid
-				button.close(data-dismiss="modal" aria-label="Close" onclick="emptEditActuatorForm()")
-			
-			.modal-body
-				form(enctype="application/json")
-					.form-group
-						label Actuator Name
-						input.form-control#modalEditActuator-actuatorname(type="text", name="actuatorname" placeholder="Lights(Bathroom)")
-						.invalid-feedback Please check your actuator name
-				
-					.form-group
-						label Actuator Type
-						input.form-control#modalEditActuator-type(type="text", name="type" placeholder="Ligths")
-						.invalid-feedback Please check your actuator type
+.modal.fade#modalEditSensor(tabindex="-1" role="dialog" aria-labelledby="modalEditSensorLabel" aria-hidden="true")
+  .modal-dialog(role="document")
+    .modal-content
+      .modal-header
+        h5.modal-title#modalEditSensorLabel Edit Sensor 
+          span#modalEditSensor-sensorid
+        button.close(data-dismiss="modal" aria-label="Close" onclick="emptyEditSensorForm()")
+          i.fas.fa-times
+      
+      .modal-body
+        form(enctype="application/json")
+          .form-group
+            label Sensor Name
+            input.form-control#modalEditSensor-sensorname(type="text", name="sensorname" placeholder="Humidity Sensor")
+            .invalid-feedback Please check your sensor name
+        
+          .form-group
+            label Sensor Unit(type 'none' for no unit)
+            input.form-control#modalEditSensor-unit(type="text", name="unit" placeholder="%")
+            .invalid-feedback Please check your sensor unit
 
-					.form-group
-						label Arduino ID
-						input.form-control#modalEditActuator-arduinoid(type="number", name="arduinoid" placeholder="12")
-						.invalid-feedback Please check your Arduino ID
+          .form-group
+            label Arduino ID
+            input.form-control#modalEditSensor-arduinoid(type="number", name="arduinoid" placeholder="12")
+            .invalid-feedback Please check your Arduino ID
 
-					.form-group
-						label Arduino Value ID
-						input.form-control#modalEditActuator-arduinovalueid(type="text", name="arduinovalueid" placeholder="LIG")
-						.invalid-feedback Please check your Arduino Value ID
-						
-			.modal-footer
-				button.btn.btn-secondary(data-dismiss="modal" onclick="emptyEditActuatorForm()") Cancel
-				button.btn.btn-primary(onclick="saveEditActuator()") Save Actuator
+          .form-group
+            label Arduino Component ID
+            input.form-control#modalEditSensor-arduinocomponentid(type="text", name="arduinocomponentid" placeholder="HUM")
+            .invalid-feedback Please check your Arduino Component ID
+            
+      .modal-footer
+        button.btn.btn-secondary(data-dismiss="modal" onclick="emptyEditSensorForm()") Cancel
+        button.btn.btn-primary(onclick="saveEditSensor()") Save Sensor

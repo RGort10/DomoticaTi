@@ -3,12 +3,10 @@ link(rel="stylesheet", href="css/main.css")
 
 .modal.fade#modalSensor(tabindex="-1" role="dialog" aria-labelledby="modalSensorLabel" aria-hidden="true")
   .modal-dialog(style="width: 90%; min-width: 400px; max-width: initial" role="document")
-    .modal-content
-      .modal-header
-        h5.modal-title#modalNewActuatorLabel Sensor
-        button.close(data-dismiss="modal" aria-label="Close" onclick="closeActuator()")
-      
+    .modal-content    
       .modal-body
+        button.close(data-dismiss="modal" aria-label="Close")
+          i.fas.fa-times
         table.table.table-borderless
           tbody.modalInfo
             tr

@@ -11,7 +11,7 @@ struct actuator readActuatorJSON();
 int CONTENT_SIZE = 0;
 
 int main(int argc, const char* argv[], char* env[]) {
-
+  searchLogin(env);
 
   char METHOD[10];
   CONTENT_SIZE = getContentSize(env);

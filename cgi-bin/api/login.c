@@ -8,19 +8,7 @@ void getLoginNeeds(char** env, char* remoteAddress, char* userAgent);
 void getLogin(char* email, char* password);
 
 
-long searchLogin(char* env[]) {
-  int index = 0, loggedIn = 0;
-  while(env[index] != NULL) {
-    if(strncmp(env[index], "HTTP_COOKIE=SESSIONID=", 22) == 0) {
-      char* sessionID = malloc(15);
-      memcpy(sessionID, env[index]+22, 10);
-      return atoi(sessionID);
-      break;
-    }
-    index++;
-  }
-  return -1;
-}
+long searchLoginCookie(char* env[]);
 
 int CONTENT_SIZE = 0;
 
@@ -76,7 +64,7 @@ int main(int argc, const char* argv[], char* env[]) {
       char userAgent[250];
       char query[3000];
       getLoginNeeds(env, remoteAddress, userAgent);
-      unsigned long cookie = searchLogin(env);
+      unsigned long cookie = searchLoginCookie(env);
       if(strlen(remoteAddress) > 1 && strlen(userAgent) > 1 && cookie) {
         sprintf(query, "UPDATE usersessions SET logout = true WHERE sessioncookie = %ld AND useragent = '%s' AND remoteAddress = '%s'", cookie, userAgent, remoteAddress);
         executeQuery(query);
@@ -91,6 +79,20 @@ int main(int argc, const char* argv[], char* env[]) {
   }
 
   return 0;
+}
+
+long searchLoginCookie(char* env[]) {
+  int index = 0, loggedIn = 0;
+  while(env[index] != NULL) {
+    if(strncmp(env[index], "HTTP_COOKIE=SESSIONID=", 22) == 0) {
+      char* sessionID = malloc(15);
+      memcpy(sessionID, env[index]+22, 10);
+      return atoi(sessionID);
+      break;
+    }
+    index++;
+  }
+  return -1;
 }
 
 void getLoginNeeds(char** env, char* remoteAddress, char* userAgent) {
