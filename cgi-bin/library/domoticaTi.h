@@ -26,6 +26,8 @@ int selectQueryJSON(char*);
 */
 
 void executeQuery(char*);
+int executeQueryNoOutput(char*);
+int countRecords(char* query);
 
 /**
  * httpFunctions

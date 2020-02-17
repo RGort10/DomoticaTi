@@ -1,10 +1,8 @@
 #include "domoticaTi.h"
 
 void getMethod(char method[], char **env) {
-  printf("Content-Type: text/plain\n\n");
   int index = 0;
   while(env[index] != NULL) {
-    printf("%s\n", env[index]);
     if(strncmp(env[index], "REQUEST_METHOD=", 15) == 0) {
       memcpy(method, env[index]+15, 9);
     }

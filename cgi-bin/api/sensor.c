@@ -10,31 +10,52 @@ struct sensor readSensorJSON();
 
 int CONTENT_SIZE = 0;
 
-int searchLogin(char* id) {
-  printf("Content-Type: text/plain\n\nLoginID found: %s\n\n\n\n", id);
-  return 1;
+void getLoginNeeds(char** env, char* remoteAddress, char* userAgent) {
+  int index = 0;
+  while(env[index] != NULL) {
+    if(strncmp(env[index], "REMOTE_ADDR=", 12) == 0) {
+      strncpy(remoteAddress, env[index]+12, 99);
+    } else if (strncmp(env[index], "HTTP_USER_AGENT=", 16) == 0) {
+      strncpy(userAgent, env[index]+16, 249);
+    }
+    index++;
+  }
 }
 
-void searchlogin(char* env[]) {
+int searchLoginSession(char* id, char** env) {
+  char remoteAddress[100];
+  char userAgent[250];
+  char query[1000];
+
+  getLoginNeeds(env, remoteAddress, userAgent);
+
+  removeBadCharacters(remoteAddress);
+  removeBadCharacters(userAgent);
+
+  sprintf(query, "SELECT count(*) FROM usersessions WHERE sessioncookie = %d AND useragent = '%s' AND remoteaddress = '%s' AND time > UNIX_TIMESTAMP() - 84600000 AND logout = false", atoi(id), userAgent, remoteAddress);
+  return countRecords(query);
+}
+
+void searchLogin(char* env[]) {
   int index = 0, loggedIn = 0;
   while(env[index] != NULL) {
     if(strncmp(env[index], "HTTP_COOKIE=SESSIONID=", 22) == 0) {
       char* sessionID = malloc(15);
       memcpy(sessionID, env[index]+22, 10);
-      loggedIn = searchLogin(sessionID);
+      loggedIn = searchLoginSession(sessionID, env);
       break;
     }
     index++;
   }
   if(loggedIn < 1) {
-    printf("STATUS: 401\n\n");
+    printf("STATUS: 401\n");
     exit(0);
   }
 }
 
 int main(int argc, const char* argv[], char* env[]) {
 
-  searchlogin(env);
+  searchLogin(env);
 
   char METHOD[10];
   CONTENT_SIZE = getContentSize(env);
