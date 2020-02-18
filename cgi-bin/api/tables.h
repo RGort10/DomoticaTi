@@ -40,3 +40,17 @@ struct sensor
   char arduinocomponentid[SENSOR_FIELD_ARDUINOCOMPONENTID_SIZE];
   unsigned int arduinoid;
 };
+
+
+const char ARDUINO_FIELD_NAMES[][30] = {"arduinoid", "arduinoname", "staticip"};
+
+#define ARDUINO_FIELDS 3
+#define ARDUINO_FIELD_ARDUINONAME_SIZE 100
+#define ARDUINO_FIELD_STATICIP_SIZE 30
+
+struct arduino
+{
+  unsigned int arduinoid;
+  char arduinoname[ARDUINO_FIELD_ARDUINONAME_SIZE];
+  char staticip[ARDUINO_FIELD_STATICIP_SIZE];
+};

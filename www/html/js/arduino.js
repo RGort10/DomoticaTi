@@ -13,8 +13,8 @@ function makeArduinoTable() {
     $.each(data.data, (index, arduino) => {
       table +=`<tr>`
       table +=`<th onclick="getArduino(${arduino.arduinoid})" scope="row">${arduino.arduinoid}</th>`
-      table +=`<td onclick="getArduino(${arduino.arduinoname})">${arduino.arduinoname}</td>`
-      table +=`<td onclick="getArduino(${arduino.staticip})">${arduino.staticip}</td>`
+      table +=`<td onclick="getArduino(${arduino.arduinoid})">${arduino.arduinoname}</td>`
+      table +=`<td onclick="getArduino(${arduino.arduinoid})">${arduino.staticip}</td>`
 			table +=`<td><button style="margin-right: 4px" class="btn btn-danger" onclick="deleteArduino(${arduino.arduinoid})"><i class="fas fa-trash-alt"></i> Delete</button>`
 			table +=`<button class="btn btn-primary" onclick="editArduino(${arduino.arduinoid})"><i class="fas fa-pencil-alt"></i> Edit</button></td>`
       table +='</tr>'
@@ -34,5 +34,15 @@ function getArduinos() {
     .fail(err => {
       console.error(err)
       throw err
+    })
+}
+
+function deleteArduino(id) {
+  $.ajax({
+    method: "DELETE",
+    url: "/cgi-bin/api/arduino.cgi?"+id
+  })
+    .done(() => {
+      makeArduinoTable()
     })
 }

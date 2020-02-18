@@ -1,0 +1,26 @@
+script(src="/js/components/modalEditArduino.js")
+
+.modal.fade#modalEditArduino(tabindex="-1" role="dialog" aria-labelledby="modalEditArduinoLabel" aria-hidden="true")
+  .modal-dialog(role="document")
+    .modal-content
+      .modal-header
+        h5.modal-title#modalEditArduinoLabel Edit Arduino 
+          span#modalEditArduino-arduinoid
+        button.close(data-dismiss="modal" aria-label="Close" onclick="emptyEditArduinoForm()")
+          i.fas.fa-times
+      
+      .modal-body
+        form(enctype="application/json")
+          .form-group
+            label Arduino Name
+            input.form-control#modalEditArduino-arduinoname(type="text", name="arduinoname" placeholder="Humidity Arduino")
+            .invalid-feedback Please check your arduino name
+        
+          .form-group
+            label Static IPv4 address
+            input.form-control#modalEditArduino-staticip(type="text", name="staticip" placeholder="HUM")
+            .invalid-feedback Please check your Static IPv4 address
+            
+      .modal-footer
+        button.btn.btn-secondary(data-dismiss="modal" onclick="emptyEditArduinoForm()") Cancel
+        button.btn.btn-primary(onclick="saveEditArduino()") Save Arduino

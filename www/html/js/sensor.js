@@ -2,8 +2,7 @@ function initSensor() {
   makeSensorTable()
   setInterval(() => {
     makeSensorTable()
-    console.log(document.cookie);
-  }, 3000)
+  }, 10000)
 }
 
 
@@ -47,6 +46,6 @@ function deleteSensor(id) {
     url: "/cgi-bin/api/sensor.cgi?"+id
   })
     .done(() => {
-      makeActuatorTable()
+      makeSensorTable()
     })
 }

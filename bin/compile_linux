@@ -34,6 +34,7 @@ cd ../../www/html
 echo compile pug files
 pug actuator.pug
 pug arduino.pug
+pug index.pug
 pug login.pug
 pug sensor.pug
 
