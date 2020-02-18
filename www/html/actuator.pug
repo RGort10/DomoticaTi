@@ -9,10 +9,11 @@ html(lang='en')
     include components/navbar.pug
 
     include components/modalNewActuator.pug
-    button.btn.btn-dark(data-toggle="modal" data-target="#modalNewActuator") 
+    button.btn.btn-dark(data-toggle="modal" data-target="#modalSettingsActuator") 
       i.fas.fa-plus
       span  New Actuator
 
     include components/modalEditActuator.pug
+    include components/modalSettingsActuator.pug
     include components/modalActuator.pug
     #actuatorTable
