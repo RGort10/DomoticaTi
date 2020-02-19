@@ -16,4 +16,16 @@ html(lang='en')
     include components/modalEditActuator.pug
     include components/modalSettingsActuator.pug
     include components/modalActuator.pug
-    #actuatorTable
+    
+    table.table.table-hover
+      thead.thead-dark
+        tr
+          th ID
+          th Actuator Name
+          th Value
+          th Type
+          th Action Type
+          th ArduinoID
+          th Actions
+
+      tbody#actuatorTable

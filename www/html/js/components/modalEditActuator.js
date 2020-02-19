@@ -1,3 +1,5 @@
+
+
 function saveEditActuator() {
 	const actuatorBody = {
 		actuatorid: 	$('#modalEditActuator-actuatorid').html(),
@@ -35,12 +37,9 @@ function saveEditActuator() {
 }
 
 function editActuator(id) {
-	$.ajax({
-		method: "GET",
-		url: '/cgi-bin/api/actuator.cgi?' + id
-	})
-		.done(data => {
-			const actuator = data.data[0]
+  getActuator(id)
+    .then(data => {
+      const actuator = data.data[0]
 			$('#modalEditActuator').modal('toggle')
 			$(`#modalEditActuator-actuatorid`).html(actuator.actuatorid)
 			$(`#modalEditActuator-actuatorname`).val(actuator.actuatorname)

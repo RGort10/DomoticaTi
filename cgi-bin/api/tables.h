@@ -1,6 +1,6 @@
-const char ACTUATOR_FIELD_NAMES[][30] = {"actuatorid", "arduinoid", "value", "type", "arduinovalueid", "actuatorname"};
+const char ACTUATOR_FIELD_NAMES[][30] = {"actuatorid", "arduinoid", "value", "type", "arduinovalueid", "actuatorname", "iopin", "minimumvalue", "maximumvalue"};
 
-#define ACTUATOR_FIELDS 6
+#define ACTUATOR_FIELDS 9
 #define ACTUATOR_FIELD_TYPE_SIZE 30
 #define ACTUATOR_FIELD_ARDUINOVALUEID_SIZE 5
 #define ACTUATOR_FIELD_ACTUATORNAME_SIZE 100
@@ -23,6 +23,9 @@ struct actuator
   char type[ACTUATOR_FIELD_TYPE_SIZE];
   char arduinovalueid[ACTUATOR_FIELD_ARDUINOVALUEID_SIZE];
   char actuatorname[ACTUATOR_FIELD_ACTUATORNAME_SIZE];
+  int iopin;
+  int minimumvalue;
+  int maximumvalue;
 };
 
 const char SENSOR_FIELD_NAMES[][30] = {"sensorid", "sensorname", "unit", "arduinocomponentid", "arduinoid"};

@@ -5,13 +5,13 @@ script(src="/js/components/modalSettingsActuator.js")
     .modal-content
       .modal-header
         h5.modal-title#modalNewActuatorLabel Settings Actuator
-        button.close(data-dismiss="modal" aria-label="Close" onclick="emptyNewActuatorForm()")
+        button.close(data-dismiss="modal" aria-label="Close" onclick="emptySettingsActuatorForm()")
           i.fas.fa-times
 
       .modal-body
         form()
           .custom-control.custom-switch
-            input.custom-control-input#modalSettingsActuator-iopin(type="checkbox" value="1")
+            input.custom-control-input#modalSettingsActuator-iopin(type="checkbox" name="iopin")
             label.custom-control-label(for="modalSettingsActuator-iopin") Actuator I/O OR PWM
         
           .form-group
@@ -25,5 +25,5 @@ script(src="/js/components/modalSettingsActuator.js")
             .invalid-feedback Please check your Maximum Value
             
       .modal-footer
-        button.btn.btn-secondary(data-dismiss="modal" onclick="emptyNewActuatorForm()") Cancel
-        button.btn.btn-primary(onclick="saveActuator()") Save Settings
+        button.btn.btn-secondary(data-dismiss="modal" onclick="emptySettingsActuatorForm()") Cancel
+        button.btn.btn-primary(onclick="saveSettingsActuator()") Save Settings

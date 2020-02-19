@@ -7,6 +7,8 @@ int validateActuator(struct actuator);
 void createInsertQueryActuator(char*, struct actuator);
 void createUpdateQueryActuator(char*, struct actuator);
 struct actuator readActuatorJSON();
+int validateActuatorSettings(struct actuator);
+void createUpdateQueryActuatorSettings(char*, struct actuator);
 
 int CONTENT_SIZE = 0;
 
@@ -59,7 +61,9 @@ int main(int argc, const char* argv[], char* env[]) {
 				char* query = malloc(150);
         sprintf(query, "SELECT * FROM actuator WHERE actuatorid = %d", atoi(actuatorid));
 				selectQueryJSON(query);
-			}
+			} else {
+        errorResponse(400, "validation vailed");
+      }
 
 		} else if(strcmp(METHOD, "PUT") == 0) {
       struct actuator actuator = readActuatorJSON();
@@ -70,12 +74,28 @@ int main(int argc, const char* argv[], char* env[]) {
 				char* query = malloc(200);
         createUpdateQueryActuator(query, actuator);
         executeQuery(query);
-			}
+			} else {
+        errorResponse(400, "validation vailed");
+      }
     } else {
       errorResponse(400, "check request url");
     }
   } else if(argc > 2) { // one redirect + 1 data
-    errorResponse(404, "url Not Found. Please check all parameters");
+    if(strcmp(METHOD, "PUT") == 0 && strcmp(argv[1], "settings") == 0) {
+      struct actuator actuator = readActuatorJSON();
+
+			const char* actuatorid = argv[2];
+      if(atoi(actuatorid) != 0 && strlen(actuatorid) > 0 && validateActuator(actuator) > 0 && validateActuatorSettings(actuator) > 0) {
+				actuator.actuatorid = atoi(actuatorid);
+				char* query = malloc(300);
+        createUpdateQueryActuatorSettings(query, actuator);
+        executeQuery(query);
+			} else {
+        errorResponse(400, "validation vailed");
+      }
+    } else {
+      errorResponse(404, "url Not Found. Please check all parameters");
+    }
   } else {
     errorResponse(404, "URL Not found. Please check all parameters");
   }
@@ -132,6 +152,36 @@ int validateActuator(struct actuator actuator) {
   return 1;
 }
 
+int validateActuatorSettings(struct actuator actuator) {
+  short validation = 1, index = 0;
+  char response[ACTUATOR_FIELDS][2][50];
+  for(index = 0; index < ACTUATOR_FIELDS; index++) {
+    strncpy(response[index][0], ACTUATOR_FIELD_NAMES[index], 50);
+    strncpy(response[index][1], "true", 50);
+  }
+  if(! (actuator.iopin == 1 || actuator.iopin == 0)) {
+    strncpy(response[6][1], "false", 50);
+    validation--;
+  }
+
+  if(actuator.maximumvalue <= actuator.minimumvalue) {
+    strncpy(response[7][1], "false", 50);
+    strncpy(response[8][1], "false", 50);
+    validation--;
+  }
+
+  if(validation < 1) {
+    printf("STATUS: 400 \ncontent-type: application/json\n\n{");
+    for (index = 6; index < ACTUATOR_FIELDS; index++) {
+      printf("\"%s\":%s%c", response[index][0], response[index][1], index+1 < ACTUATOR_FIELDS ? ',' : ' ');
+    }
+    printf("}");
+    exit(0);
+  }
+
+  return validation;
+}
+
 void createInsertQueryActuator(char* query, struct actuator actuator) {
   strcpy(query, "INSERT INTO actuator (arduinoid, value, type, arduinovalueid, actuatorname) VALUES(");
 
@@ -160,8 +210,21 @@ void createUpdateQueryActuator(char* query, struct actuator actuator) {
 	sprintf(query, "%s%d", query, actuator.actuatorid);
 }
 
+void createUpdateQueryActuatorSettings(char* query, struct actuator actuator) {
+	strcpy(query, "UPDATE actuator SET iopin = ");
+
+  sprintf(query, "%s%d", query, actuator.iopin);
+  strcat(query, ", minimumvalue = ");
+  sprintf(query, "%s%d", query, actuator.minimumvalue);
+  strcat(query, ", maximumvalue = ");
+  sprintf(query, "%s%d", query, actuator.maximumvalue);
+  strcat(query, " WHERE actuatorid = ");
+	sprintf(query, "%s%d", query, actuator.actuatorid);
+}
+
+
 struct actuator readActuatorJSON() {
-  struct actuator newActuator = {-1,-1,0,"","",""}; //define all elements so we can validate the struct
+  struct actuator newActuator = {-1,-1,0,"","","", 0, 0, 0}; //define all elements so we can validate the struct
   
   char* data = malloc(CONTENT_SIZE+10);
   int index;
@@ -196,6 +259,18 @@ struct actuator readActuatorJSON() {
       
       case 5:
         memcpy(newActuator.actuatorname, retrievedData, ACTUATOR_FIELD_ACTUATORNAME_SIZE);
+        break;
+      
+      case 6:
+        newActuator.iopin = atoi(retrievedData);
+        break;
+      
+      case 7:
+        newActuator.minimumvalue = atoi(retrievedData);
+        break;
+      
+      case 8:
+        newActuator.maximumvalue = atoi(retrievedData);
         break;
       
       default:
