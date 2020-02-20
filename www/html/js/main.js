@@ -14,6 +14,7 @@ function getActuator(id) {
 	})
 		.done(data => {
       localActuator = _.cloneDeep(data.data[0])
+      console.log(localActuator)
       return data
     })
     .fail(err => {
@@ -33,10 +34,9 @@ function makeActuatorTable() {
       table +=`<td onclick="getModalActuator(${actuator.actuatorid})">${actuator.value}</td>`
       table +=`<td onclick="getModalActuator(${actuator.actuatorid})">${actuator.type}</td>`
       table +=`<td onclick="getModalActuator(${actuator.actuatorid})">${actuator.iopin === '1' ? 'I/O' : 'PWM'}</td>`
+      table +=`<td onclick="getModalActuator(${actuator.actuatorid})"><button class="btn btn-circle btn-${actuator.auto === '1' ? 'success' : 'danger'}"></button></td>`
       table +=`<td onclick="getModalActuator(${actuator.actuatorid})">${actuator.arduinoid}</td>`
-			table +=`<td><button style="margin-right: 4px" class="btn btn-danger" onclick="deleteActuator(${actuator.actuatorid})"><i class="fas fa-trash-alt"></i> Delete</button>`
-      table +=`<button style="margin-right: 4px" class="btn btn-primary" onclick="editActuator(${actuator.actuatorid})"><i class="fas fa-pencil-alt"></i> Edit</button>`
-      table +=`<button class="btn btn-primary" onclick="settingsActuator(${actuator.actuatorid})"><i class="fas fa-wrench"></i> Settings</button></td>`
+			table +=`<td><button style="margin-right: 4px" class="btn btn-primary" onclick="editValueActuator(${actuator.actuatorid})"><i class="fas fa-pencil-alt"></i> Change Value</button></td>`
       table +='</tr>'
     })
     $("#actuatorTable").html(table)

@@ -1,0 +1,28 @@
+script(src="/js/components/modalActuator/modalEditValueActuator.js")
+
+.modal.fade#modalEditValueActuator(role="dialog")
+  .modal-dialog(role="document")
+    .modal-content
+      .modal-header
+        h5.modal-title Change Actuator Value
+        button.close(data-dismiss="modal" aria-label="Close")
+          i.fas.fa-times
+
+      .modal-body
+        #modalEditValueActuator-io
+          .form-group
+            span.switch
+              input.switch.switch-normal#modalEditValueActuator-iovalue(type="checkbox")
+              label(for="modalEditValueActuator-iovalue") On/Off
+            
+        #modalEditValueActuator-pwm
+          input#modalEditValueActuator-pwmSlider.custom-range(type="range" step="1" oninput="syncPWMValue(0)")
+          .form-group
+            label Value:
+            input#modalEditValueActuator-pwmInput.form-control(type="number" step="1" onkeyup="syncPWMValue(1)")
+
+        span#modalEditValueActuator-errorMessage
+
+      .modal-footer
+        button.btn.btn-secondary(data-dismiss="modal") Cancel
+        button.btn.btn-primary(onclick="saveEditValueActuator()") Save Value

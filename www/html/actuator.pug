@@ -8,13 +8,10 @@ html(lang='en')
   body(onload="init()")
     include components/navbar.pug
 
-    include components/modalNewActuator.pug
-    button.btn.btn-dark(data-toggle="modal" data-target="#modalSettingsActuator") 
+    button.btn.btn-dark(data-toggle="modal" data-target="#modalNewActuator") 
       i.fas.fa-plus
       span  New Actuator
 
-    include components/modalEditActuator.pug
-    include components/modalSettingsActuator.pug
     include components/modalActuator.pug
     
     table.table.table-hover
@@ -25,6 +22,7 @@ html(lang='en')
           th Value
           th Type
           th Action Type
+          th Auto
           th ArduinoID
           th Actions
 

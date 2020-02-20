@@ -1,6 +1,12 @@
 script(src="/js/components/modalActuator.js")
 link(rel="stylesheet", href="css/main.css")
 
+
+include modalActuator/modalEditActuator.pug
+include modalActuator/modalSettingsActuator.pug
+include modalActuator/modalNewActuator.pug
+include modalActuator/modalEditValueActuator.pug
+
 .modal.fade#modalActuator(tabindex="-1" role="dialog" aria-labelledby="modalActuatorLabel" aria-hidden="true")
   .modal-dialog(style="width: 90%; min-width: 400px; max-width: initial" role="document")
     .modal-content
@@ -27,6 +33,10 @@ link(rel="stylesheet", href="css/main.css")
                   span Wijzig Value
             
             tr
+              th Auto:  
+              td#modalActuator-auto
+
+            tr
               th Arduino ID: 
               td#modalActuator-arduinoid
 
@@ -46,8 +56,20 @@ link(rel="stylesheet", href="css/main.css")
               th Minimum Value: 
               td#modalActuator-maximumvalue
             
-            br
-            br
+        button.btn.btn-danger.btnInline#modalActuator-deleteActuator
+          i.fas.fa-trash-alt  
+          span Delete
+        
+        button.btn.btn-primary.btnInline#modalActuator-editActuator
+          i.fas.fa-pencil-alt  
+          span Edit
+
+        button.btn.btn-primary.btnInline#modalActuator-settingsActuator
+          i.fas.fa-wrench  
+          span Settings
+
+        br
+        br
 
         table.table
           thead.thead-dark
