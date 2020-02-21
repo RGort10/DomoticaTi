@@ -1,8 +1,9 @@
 function getModalActuator(id) {
+  console.log('hallo')
   getActuator(id)
 		.then(data => {
 			const actuator = data.data[0]
-			$('#modalActuator').modal('toggle')
+			$('#modalActuator').modal('show')
 			$(`#modalActuator-actuatorname`).html(actuator.actuatorname)
 			$(`#modalActuator-value`).html(actuator.value)
 			$(`#modalActuator-type`).html(actuator.type)

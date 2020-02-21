@@ -1,3 +1,7 @@
+* {
+  margin: 0;
+  padding: 0; }
+
 .modalInfo th {
   width: 15%;
   min-width: 250px; }
@@ -99,11 +103,5 @@
       margin-left: calc(3rem * .8); }
   .switch + .switch {
     margin-left: 1rem; }
-
-body {
-  padding: 1rem; }
-
-.dropdown-menu {
-  margin-top: .75rem; }
 
 /*# sourceMappingURL=main.css.map */

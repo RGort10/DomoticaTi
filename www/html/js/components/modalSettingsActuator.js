@@ -1,34 +1,34 @@
 function saveSettingsActuator() {
-  console.log(localActuator)
   const actuatorBody = _.cloneDeep(localActuator)
   actuatorBody.iopin = $(`#modalSettingsActuator-iopin`).prop("checked") ? '1' : '0' // +0 for true to 1 and false to 0
   actuatorBody.minimumvalue = $(`#modalSettingsActuator-minimumvalue`).val()
   actuatorBody.maximumvalue = $(`#modalSettingsActuator-maximumvalue`).val()
+  actuatorBody.value = actuatorBody.value == actuatorBody.maximumvalue ? actuatorBody.maximumvalue : actuatorBody.minimumvalue
 
-	if (1===1){//validateActuator(actuatorBody) || 1 === 1) {
-		$.ajax({
-			method: 'PUT',
-			url: '/cgi-bin/api/actuator.cgi?settings+' + actuatorBody.actuatorid,
-			data: JSON.stringify(actuatorBody)
-		})
-			.done(() => {
-				emptySettingsActuatorForm()
-				$('#modalSettingsActuator').modal('toggle')
-			})
-			.fail((err) => {
-				if(err.status === 400) {
-					$.each(err.responseJSON, (key, value) => {
-						if(value === false) {
-							$(`#modalSettingsActuator-${key}`).addClass('is-invalid')
-							$(`#modalSettingsActuator-${key}`).removeClass('is-valid')
-						} else {
-							$(`#modalSettingsActuator-${key}`).addClass('is-valid')
-							$(`#modalSettingsActuator-${key}`).removeClass('is-invalid')
-						}
-					})
-				}
-			})
-	}
+  $.ajax({
+    method: 'PUT',
+    url: '/cgi-bin/api/actuator.cgi?settings+' + actuatorBody.actuatorid,
+    data: JSON.stringify(actuatorBody)
+  })
+    .done(() => {
+      emptySettingsActuatorForm()
+      $('#modalSettingsActuator').modal('toggle')
+      getModalActuator(actuatorBody.actuatorid)
+      makeActuatorTable()
+    })
+    .fail((err) => {
+      if(err.status === 400) {
+        $.each(err.responseJSON, (key, value) => {
+          if(value === false) {
+            $(`#modalSettingsActuator-${key}`).addClass('is-invalid')
+            $(`#modalSettingsActuator-${key}`).removeClass('is-valid')
+          } else {
+            $(`#modalSettingsActuator-${key}`).addClass('is-valid')
+            $(`#modalSettingsActuator-${key}`).removeClass('is-invalid')
+          }
+        })
+      }
+    })
 }
 
 function settingsActuator(id) {

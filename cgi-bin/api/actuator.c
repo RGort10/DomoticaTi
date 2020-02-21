@@ -93,6 +93,18 @@ int main(int argc, const char* argv[], char* env[]) {
 			} else {
         errorResponse(400, "validation vailed");
       }
+    } else if(strcmp(METHOD, "PUT") == 0 && strcmp(argv[1], "value") == 0) {
+      struct actuator actuator = readActuatorJSON();
+
+			const char* actuatorid = argv[2];
+      if(atoi(actuatorid) != 0 && strlen(actuatorid) > 0 && validateActuator(actuator) > 0 && validateActuatorSettings(actuator) > 0) {
+				actuator.actuatorid = atoi(actuatorid);
+				char* query = malloc(300);
+        sprintf(query, "UPDATE actuator SET value = %d WHERE actuatorid = %d", actuator.value, actuator.actuatorid);
+        executeQuery(query);
+			} else {
+        errorResponse(400, "validation vailed");
+      }
     } else {
       errorResponse(404, "url Not Found. Please check all parameters");
     }
@@ -122,8 +134,6 @@ int validateActuator(struct actuator actuator) {
     strncpy(response[1][1], "false", 50);
     validation--;
   }
-
-  actuator.value = 0; //No matter what the user sends, the first value is always 0
 
   if(strlen(actuator.type) == 0) {
     strncpy(response[3][1], "false", 50);
@@ -170,9 +180,16 @@ int validateActuatorSettings(struct actuator actuator) {
     validation--;
   }
 
+  if(actuator.value > actuator.maximumvalue || actuator.value < actuator.minimumvalue) {
+    strncpy(response[2][1], "false", 50);
+    strncpy(response[7][1], "false", 50);
+    strncpy(response[8][1], "false", 50);
+    validation--;
+  }
+
   if(validation < 1) {
     printf("STATUS: 400 \ncontent-type: application/json\n\n{");
-    for (index = 6; index < ACTUATOR_FIELDS; index++) {
+    for (index = 0; index < ACTUATOR_FIELDS; index++) {
       printf("\"%s\":%s%c", response[index][0], response[index][1], index+1 < ACTUATOR_FIELDS ? ',' : ' ');
     }
     printf("}");
@@ -183,10 +200,9 @@ int validateActuatorSettings(struct actuator actuator) {
 }
 
 void createInsertQueryActuator(char* query, struct actuator actuator) {
-  strcpy(query, "INSERT INTO actuator (arduinoid, value, type, arduinovalueid, actuatorname) VALUES(");
+  strcpy(query, "INSERT INTO actuator (arduinoid, type, arduinovalueid, actuatorname) VALUES(");
 
-  sprintf(query, "%s%d,", query, actuator.arduinoid);
-	sprintf(query, "%s%d", query, actuator.value);
+  sprintf(query, "%s%d", query, actuator.arduinoid);
   strcat(query, ",'");
   strcat(query, actuator.type);
   strcat(query, "','");
@@ -218,6 +234,8 @@ void createUpdateQueryActuatorSettings(char* query, struct actuator actuator) {
   sprintf(query, "%s%d", query, actuator.minimumvalue);
   strcat(query, ", maximumvalue = ");
   sprintf(query, "%s%d", query, actuator.maximumvalue);
+  strcat(query, ", value = ");
+  sprintf(query, "%s%d", query, actuator.value);
   strcat(query, " WHERE actuatorid = ");
 	sprintf(query, "%s%d", query, actuator.actuatorid);
 }
@@ -231,10 +249,11 @@ struct actuator readActuatorJSON() {
 
   fgets(data, CONTENT_SIZE, stdin);
   for(index = 0; index < ACTUATOR_FIELDS; index++) {
-    char* dataPointer = strstr(data, ACTUATOR_FIELD_NAMES[index]);
+    char searchString[50];
+    sprintf(searchString, "\"%s\"", ACTUATOR_FIELD_NAMES[index]);
+    char* dataPointer = strstr(data, searchString);
     if(dataPointer != NULL) {
-
-      dataPointer = dataPointer + 3 + strlen(ACTUATOR_FIELD_NAMES[index]); //+3 for: ": "
+      dataPointer = dataPointer + 4 + strlen(ACTUATOR_FIELD_NAMES[index]); //+3 for: ": "
       char* dataPointerEnd = strchr(dataPointer, '"');
 
       int dataSize = dataPointerEnd - dataPointer;
@@ -243,10 +262,13 @@ struct actuator readActuatorJSON() {
       strncpy(retrievedData, dataPointer, dataSize);
       retrievedData[dataSize] = '\0';
       removeBadCharacters(retrievedData);
-
       switch (index) { // starts with 1 because user can't make there own id.
       case 1:
         newActuator.arduinoid = atoi(retrievedData);
+        break;
+
+      case 2:
+        newActuator.value = atoi(retrievedData);
         break;
       
       case 3:

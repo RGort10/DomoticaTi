@@ -1,3 +1,8 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
 .modalInfo {
 	th {
 		width: 15%;
@@ -195,15 +200,4 @@ $switch-transition: .2s all !default;
   + .switch {
     margin-left: 1rem;
   }
-}
-
-//
-// Demo only
-//
-body {
-  padding: 1rem;
-}
-
-.dropdown-menu {
-  margin-top: .75rem;
 }

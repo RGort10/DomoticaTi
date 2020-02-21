@@ -9,31 +9,30 @@ function saveEditActuator() {
 		arduinovalueid: $('#modalEditActuator-arduinovalueid').val()
 	}
 
-	if (1===1){//validateActuator(actuatorBody) || 1 === 1) {
-		$.ajax({
-			method: 'PUT',
-			url: '/cgi-bin/api/actuator.cgi?' + actuatorBody.actuatorid,
-			data: JSON.stringify(actuatorBody)
-		})
-			.done(() => {
-				emptyEditActuatorForm()
-				$('#modalEditActuator').modal('toggle')
-				makeActuatorTable()
-			})
-			.fail((err) => {
-				if(err.status === 400) {
-					$.each(err.responseJSON, (key, value) => {
-						if(value === false) {
-							$(`#modalEditActuator-${key}`).addClass('is-invalid')
-							$(`#modalEditActuator-${key}`).removeClass('is-valid')
-						} else {
-							$(`#modalEditActuator-${key}`).addClass('is-valid')
-							$(`#modalEditActuator-${key}`).removeClass('is-invalid')
-						}
-					})
-				}
-			})
-	}
+  $.ajax({
+    method: 'PUT',
+    url: '/cgi-bin/api/actuator.cgi?' + actuatorBody.actuatorid,
+    data: JSON.stringify(actuatorBody)
+  })
+    .done(() => {
+      emptyEditActuatorForm()
+      $('#modalEditActuator').modal('toggle')
+      getModalActuator(actuatorBody.actuatorid)
+      makeActuatorTable()
+    })
+    .fail((err) => {
+      if(err.status === 400) {
+        $.each(err.responseJSON, (key, value) => {
+          if(value === false) {
+            $(`#modalEditActuator-${key}`).addClass('is-invalid')
+            $(`#modalEditActuator-${key}`).removeClass('is-valid')
+          } else {
+            $(`#modalEditActuator-${key}`).addClass('is-valid')
+            $(`#modalEditActuator-${key}`).removeClass('is-invalid')
+          }
+        })
+      }
+    })
 }
 
 function editActuator(id) {
