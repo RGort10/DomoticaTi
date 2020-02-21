@@ -39,9 +39,11 @@ int main(int argc, const char* argv[], char* env[]) {
         if(countRecords(query)) {
           unsigned int sessionID = (unsigned int)rand();
 
+          sprintf(query, "SELECT userid FROM user WHERE email = '%s' AND password = '%s'", email, password);
+          int userid = countRecords(query); // Dit is vies. TODO Make dedicated function
           getLoginNeeds(env, remoteAddress, userAgent);
 
-          sprintf(query, "INSERT INTO usersessions (userid, sessioncookie, remoteaddress, useragent, time) VALUES (%d, %d, '%s', '%s', UNIX_TIMESTAMP())", 1, sessionID, remoteAddress, userAgent);
+          sprintf(query, "INSERT INTO usersessions (userid, sessioncookie, remoteaddress, useragent, time) VALUES (%d, %d, '%s', '%s', UNIX_TIMESTAMP())", userid, sessionID, remoteAddress, userAgent);
           if(executeQueryNoOutput(query)) {
             printf("STATUS: 200\nSet-Cookie: SESSIONID=%d\n", sessionID);
           } else {

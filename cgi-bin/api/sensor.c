@@ -11,8 +11,9 @@ struct sensor readSensorJSON();
 int CONTENT_SIZE = 0;
 
 int main(int argc, const char* argv[], char* env[]) {
+  char username[100];
+  const int acceslevel = searchLogin(env, username);
 
-  searchLogin(env);
 
   char METHOD[10];
   CONTENT_SIZE = getContentSize(env);

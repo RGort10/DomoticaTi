@@ -2,18 +2,19 @@
 #include "../library/domoticaTi.h"
 #include <mariadb/mysql.h>
 
-
 int validateActuator(struct actuator);
 void createInsertQueryActuator(char*, struct actuator);
 void createUpdateQueryActuator(char*, struct actuator);
 struct actuator readActuatorJSON();
 int validateActuatorSettings(struct actuator);
 void createUpdateQueryActuatorSettings(char*, struct actuator);
+void actuatorHistory(char*, unsigned int, int);
 
 int CONTENT_SIZE = 0;
 
 int main(int argc, const char* argv[], char* env[]) {
-  searchLogin(env);
+  char username[100];
+  const int acceslevel = searchLogin(env, username);
 
   char METHOD[10];
   CONTENT_SIZE = getContentSize(env);
@@ -43,16 +44,19 @@ int main(int argc, const char* argv[], char* env[]) {
     }
   } else if(argc == 2) { // one data
     if(strcmp(METHOD, "DELETE") == 0) {
+      if(acceslevel >= ACCESLEVEL_DELETE) {
+        const char* actuatorid = argv[1];
 
-      const char* actuatorid = argv[1];
+        if(atoi(actuatorid) != 0 && strlen(actuatorid) > 0) {
+          char* query = malloc(150);
+          sprintf(query, "DELETE FROM actuator WHERE actuatorid=%d", atoi(actuatorid));
+          executeQuery(query);
 
-      if(atoi(actuatorid) != 0 && strlen(actuatorid) > 0) {
-        char* query = malloc(150);
-        sprintf(query, "DELETE FROM actuator WHERE actuatorid=%d", atoi(actuatorid));
-        executeQuery(query);
-
+        } else {
+          errorResponse(400, "validation vailed");
+        }
       } else {
-        errorResponse(400, "validation vailed");
+        errorResponse(455, "Unauthorized, Acceslevel Not High Enough!");
       }
 
     } else if(strcmp(METHOD, "GET") == 0) {
@@ -100,11 +104,19 @@ int main(int argc, const char* argv[], char* env[]) {
       if(atoi(actuatorid) != 0 && strlen(actuatorid) > 0 && validateActuator(actuator) > 0 && validateActuatorSettings(actuator) > 0) {
 				actuator.actuatorid = atoi(actuatorid);
 				char* query = malloc(300);
+        actuatorHistory(username, actuator.actuatorid, actuator.value);
         sprintf(query, "UPDATE actuator SET value = %d WHERE actuatorid = %d", actuator.value, actuator.actuatorid);
         executeQuery(query);
 			} else {
         errorResponse(400, "validation vailed");
       }
+    } else if(strcmp(METHOD, "GET") == 0 && strcmp(argv[1], "last") == 0) {
+      const char* actuatorid = argv[2];
+        if(atoi(actuatorid) != 0 && strlen(actuatorid) > 0) {
+          char* query = malloc(150);
+          sprintf(query, "SELECT * FROM actuatorhistory WHERE actuatorid = %d ORDER BY date DESC, time DESC LIMIT 25", atoi(actuatorid));
+          selectQueryJSON(query);
+        }
     } else {
       errorResponse(404, "url Not Found. Please check all parameters");
     }
@@ -302,4 +314,10 @@ struct actuator readActuatorJSON() {
   }
 
   return newActuator;
+}
+
+void actuatorHistory(char* username, unsigned int actuatorid, int value) {
+  char query[2000];
+  sprintf(query, "INSERT INTO actuatorhistory(actuatorid, value, bywho, date, time) VALUES (%d, %d, '<b>User: </b>%s', CURDATE() + 0, CURTIME() + 0)", actuatorid, value, username);
+  executeQueryNoOutput(query);
 }

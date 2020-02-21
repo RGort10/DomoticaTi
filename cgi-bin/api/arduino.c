@@ -12,7 +12,9 @@ int CONTENT_SIZE = 0;
 
 int main(int argc, const char* argv[], char* env[]) {
 
-  searchLogin(env);
+  char username[100];
+  const int acceslevel = searchLogin(env, username);
+
 
   char METHOD[10];
   CONTENT_SIZE = getContentSize(env);

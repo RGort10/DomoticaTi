@@ -4,13 +4,15 @@
 #include <string.h>
 #include <time.h>
 
+
+#define ACCESLEVEL_DELETE 11
+
 /**
  * Error Response
 */
 
 void finish_with_error(MYSQL*);
 void errorResponse(int, char*);
-
 
 
 /**
@@ -20,7 +22,6 @@ void errorResponse(int, char*);
 int selectQueryJSON(char*);
 
 
-
 /**
  * database
 */
@@ -28,6 +29,7 @@ int selectQueryJSON(char*);
 void executeQuery(char*);
 int executeQueryNoOutput(char*);
 int countRecords(char* query);
+int getUser(char* query, char* username);
 
 /**
  * httpFunctions
@@ -36,16 +38,18 @@ int countRecords(char* query);
 void getMethod(char[], char**);
 int getContentSize(char**);
 
+
 /**
  * validation
 */
 
 void removeBadCharacters(char*);
 
+
 /**
  * Login
 */
 
 void getLoginNeeds(char**, char*, char*);
-int searchLoginSession(char*, char**);
-void searchLogin(char**);
+int searchLoginSession(char*, char**, char*);
+int searchLogin(char**, char*);
