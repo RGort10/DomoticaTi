@@ -1,3 +1,4 @@
+#include <curl/curl.h>
 #include <mariadb/mysql.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -28,6 +29,7 @@ int selectQueryJSON(char*);
 
 void executeQuery(char*);
 int executeQueryNoOutput(char*);
+void getOneRecordOneColumn(char*, char*);
 int countRecords(char* query);
 int getUser(char* query, char* username);
 
@@ -51,5 +53,13 @@ void removeBadCharacters(char*);
 */
 
 void getLoginNeeds(char**, char*, char*);
+void getRemoteAddress(char**, char*);
+void getUserAgent(char**, char*);
 int searchLoginSession(char*, char**, char*);
 int searchLogin(char**, char*);
+
+/**
+ * LibcURL 
+*/
+
+int pingArduino(char*, char*);

@@ -1,4 +1,3 @@
-#include <mariadb/mysql.h>
 #include "domoticaTi.h"
 
 

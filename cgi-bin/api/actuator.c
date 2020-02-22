@@ -107,6 +107,11 @@ int main(int argc, const char* argv[], char* env[]) {
         actuatorHistory(username, actuator.actuatorid, actuator.value);
         sprintf(query, "UPDATE actuator SET value = %d WHERE actuatorid = %d", actuator.value, actuator.actuatorid);
         executeQuery(query);
+        char staticIpArduino[100];
+        char queryStaticIpArduino[500];
+        sprintf(queryStaticIpArduino, "SELECT staticip FROM arduino WHERE arduinoid = '%s'", actuator.arduinoid);
+        getOneRecordOneColumn(queryStaticIpArduino, staticIpArduino);
+        pingArduino(staticIpArduino, actuator.arduinocomponentid);
 			} else {
         errorResponse(400, "validation vailed");
       }
@@ -152,7 +157,7 @@ int validateActuator(struct actuator actuator) {
     validation--;
   }
 
-  if(strlen(actuator.arduinovalueid) != 3) {
+  if(strlen(actuator.arduinocomponentid) != 3) {
     strncpy(response[4][1], "false", 50);
     validation--;
   }
@@ -212,13 +217,13 @@ int validateActuatorSettings(struct actuator actuator) {
 }
 
 void createInsertQueryActuator(char* query, struct actuator actuator) {
-  strcpy(query, "INSERT INTO actuator (arduinoid, type, arduinovalueid, actuatorname) VALUES(");
+  strcpy(query, "INSERT INTO actuator (arduinoid, type, arduinocomponentid, actuatorname) VALUES(");
 
   sprintf(query, "%s%d", query, actuator.arduinoid);
   strcat(query, ",'");
   strcat(query, actuator.type);
   strcat(query, "','");
-  strcat(query, actuator.arduinovalueid);
+  strcat(query, actuator.arduinocomponentid);
   strcat(query, "','");
   strcat(query, actuator.actuatorname);
   strcat(query, "')");
@@ -230,8 +235,8 @@ void createUpdateQueryActuator(char* query, struct actuator actuator) {
   sprintf(query, "%s%d", query, actuator.arduinoid);
   strcat(query, ", type = '");
   strcat(query, actuator.type);
-  strcat(query, "', arduinovalueid = '");
-  strcat(query, actuator.arduinovalueid);
+  strcat(query, "', arduinocomponentid = '");
+  strcat(query, actuator.arduinocomponentid);
   strcat(query, "', actuatorname = '");
   strcat(query, actuator.actuatorname);
   strcat(query, "' WHERE actuatorid = ");
@@ -288,7 +293,7 @@ struct actuator readActuatorJSON() {
         break;
       
       case 4:
-        strncpy(newActuator.arduinovalueid, retrievedData, ACTUATOR_FIELD_ARDUINOVALUEID_SIZE);
+        strncpy(newActuator.arduinocomponentid, retrievedData, ACTUATOR_FIELD_arduinocomponentid_SIZE);
         break;
       
       case 5:

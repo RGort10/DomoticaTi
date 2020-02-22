@@ -3,7 +3,7 @@ function saveActuator() {
 		actuatorname: 	$('#modalNewActuator-actuatorname').val(),
 		type: 					$('#modalNewActuator-type').val(),
 		arduinoid: 			$('#modalNewActuator-arduinoid').val(),
-		arduinovalueid: $('#modalNewActuator-arduinovalueid').val()
+		arduinocomponentid: $('#modalNewActuator-arduinocomponentid').val()
 	}
 
 	if (1===1){//validateActuator(actuatorBody) || 1 === 1) {
@@ -37,13 +37,13 @@ function emptyNewActuatorForm() {
 	$(`#modalNewActuator-actuatorname`).removeClass('is-valid')
 	$(`#modalNewActuator-type`).removeClass('is-valid')
 	$(`#modalNewActuator-arduinoid`).removeClass('is-valid')
-	$(`#modalNewActuator-arduinovalueid`).removeClass('is-valid')
+	$(`#modalNewActuator-arduinocomponentid`).removeClass('is-valid')
 	$(`#modalNewActuator-actuatorname`).removeClass('is-invalid')
 	$(`#modalNewActuator-type`).removeClass('is-invalid')
 	$(`#modalNewActuator-arduinoid`).removeClass('is-invalid')
-	$(`#modalNewActuator-arduinovalueid`).removeClass('is-invalid')
+	$(`#modalNewActuator-arduinocomponentid`).removeClass('is-invalid')
 	$(`#modalNewActuator-actuatorname`).val(null)
 	$(`#modalNewActuator-type`).val(null)
 	$(`#modalNewActuator-arduinoid`).val(null)
-	$(`#modalNewActuator-arduinovalueid`).val(null)
+	$(`#modalNewActuator-arduinocomponentid`).val(null)
 }

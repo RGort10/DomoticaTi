@@ -1,9 +1,12 @@
 #!/bin/bash
+BASEDIR=$(dirname "$0")
+cd $BASEDIR
+
 echo Going to library dir
 cd ../cgi-bin/library
 
 echo compile all .c to  all .o
-gcc -c *.c $(mariadb_config --libs)
+gcc -c *.c $(mariadb_config --libs)  $(pkg-config --libs --cflags libcurl)
 
 echo combining all .o to one .a
 ar -rc libdomoticati.a *.o

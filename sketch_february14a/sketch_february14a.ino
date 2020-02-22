@@ -9,11 +9,12 @@ MFRC522 mfrc522(SS_PIN, RST_PIN);
 
 char previousKey[50];
 unsigned int nextKeyTime;
+unsigned int nextLDRTime = 0;
 bool switchedOFF = true;
 
 byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 
-IPAddress serverip(192, 168, 178, 131);
+IPAddress serverip(192, 168, 178, 213);
 IPAddress ip(192, 168, 178, 14);
 
 EthernetClient server_client;
@@ -36,8 +37,9 @@ void setup() {
 
     if (Ethernet.hardwareStatus() == EthernetNoHardware) {
         Serial.println("Ethernet shield was not found.  Sorry, can't run without hardware. :(");
+        
         while (true) {
-        delay(1); // do nothing, no point running without Ethernet hardware
+            delay(1);
         }
     }
     if (Ethernet.linkStatus() == LinkOFF) {
@@ -159,6 +161,18 @@ void loop() {
         server_client.read(buffer, len);
         Serial.write("data: ");
         Serial.write(buffer, len); // show in the serial monitor (slows some boards)
+    }
+
+    if(nextLDRTime < (unsigned int)millis() && ((unsigned int)millis() - nextLDRTime) < 2000) {
+        if(nextLDRTime > 50000) {
+            nextLDRTime = 0;
+        } else {
+            nextLDRTime += 10000;
+        }
+
+        char value[6];
+        sprintf(value, "%d", analogRead(A0));
+        serverRequest(value, "POST /cgi-bin/arduino/sensor.cgi");
     }
 
     if(nextKeyTime < (unsigned int)millis()) {

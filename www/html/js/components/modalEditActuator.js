@@ -6,7 +6,7 @@ function saveEditActuator() {
 		actuatorname: 	$('#modalEditActuator-actuatorname').val(),
 		type: 					$('#modalEditActuator-type').val(),
 		arduinoid: 			$('#modalEditActuator-arduinoid').val(),
-		arduinovalueid: $('#modalEditActuator-arduinovalueid').val()
+		arduinocomponentid: $('#modalEditActuator-arduinocomponentid').val()
 	}
 
   $.ajax({
@@ -44,7 +44,7 @@ function editActuator(id) {
 			$(`#modalEditActuator-actuatorname`).val(actuator.actuatorname)
 			$(`#modalEditActuator-type`).val(actuator.type)
 			$(`#modalEditActuator-arduinoid`).val(actuator.arduinoid)
-			$(`#modalEditActuator-arduinovalueid`).val(actuator.arduinovalueid)
+			$(`#modalEditActuator-arduinocomponentid`).val(actuator.arduinocomponentid)
 		})
 }
 
@@ -52,13 +52,13 @@ function emptyEditActuatorForm() {
 	$(`#modalEditActuator-actuatorname`).removeClass('is-valid')
 	$(`#modalEditActuator-type`).removeClass('is-valid')
 	$(`#modalEditActuator-arduinoid`).removeClass('is-valid')
-	$(`#modalEditActuator-arduinovalueid`).removeClass('is-valid')
+	$(`#modalEditActuator-arduinocomponentid`).removeClass('is-valid')
 	$(`#modalEditActuator-actuatorname`).removeClass('is-invalid')
 	$(`#modalEditActuator-type`).removeClass('is-invalid')
 	$(`#modalEditActuator-arduinoid`).removeClass('is-invalid')
-	$(`#modalEditActuator-arduinovalueid`).removeClass('is-invalid')
+	$(`#modalEditActuator-arduinocomponentid`).removeClass('is-invalid')
 	$(`#modalEditActuator-actuatorname`).val(null)
 	$(`#modalEditActuator-type`).val(null)
 	$(`#modalEditActuator-arduinoid`).val(null)
-	$(`#modalEditActuator-arduinovalueid`).val(null)
+	$(`#modalEditActuator-arduinocomponentid`).val(null)
 }
