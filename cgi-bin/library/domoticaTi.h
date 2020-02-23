@@ -39,7 +39,8 @@ int getUser(char* query, char* username);
 
 void getMethod(char[], char**);
 int getContentSize(char**);
-
+void getRemoteAddress(char**, char*);
+void getUserAgent(char**, char*);
 
 /**
  * validation
@@ -53,8 +54,6 @@ void removeBadCharacters(char*);
 */
 
 void getLoginNeeds(char**, char*, char*);
-void getRemoteAddress(char**, char*);
-void getUserAgent(char**, char*);
 int searchLoginSession(char*, char**, char*);
 int searchLogin(char**, char*);
 

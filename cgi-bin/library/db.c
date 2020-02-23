@@ -72,7 +72,7 @@ int countRecords(char* query) {
   return atoi(row[0]);
 }
 
-void getOneRecordOneColumn(char* query, char* result) {
+void getOneRecordOneColumn(char* query, char* response) {
   int fieldCounter = 0, i = 0;
   MYSQL *con = mysql_init(NULL);
 
@@ -98,7 +98,7 @@ void getOneRecordOneColumn(char* query, char* result) {
   MYSQL_FIELD *field;
 
   row = mysql_fetch_row(result);
-  sprintf(result, "%s", row[0]);
+  sprintf(response, "%s", row[0]);
   
   mysql_free_result(result);
   mysql_close(con);

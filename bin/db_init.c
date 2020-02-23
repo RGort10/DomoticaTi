@@ -26,7 +26,7 @@ int main(int argc, char **argv)
   
   if (mysql_query(con, "CREATE TABLE IF NOT EXISTS arduino(arduinoid INT UNSIGNED PRIMARY KEY NOT NULL AUTO_INCREMENT,\
 staticip VARCHAR(40) NOT NULL DEFAULT '',\
-ArduinoName VARCHAR(100) NOT NULL DEFAULT '')")) {      
+arduinoname VARCHAR(100) NOT NULL DEFAULT '')")) {      
       finish_with_error(con);
   }
 
@@ -84,7 +84,7 @@ accesslevel INT NOT NULL DEFAULT 0)")) {
 userid INT UNSIGNED NOT NULL,\
 useragent VARCHAR(255) NOT NULL DEFAULT '',\
 remoteaddress VARCHAR(100) NOT NULL DEFAULT '',\
-time long NOT NULL DEFAULT 0,\
+time TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,\
 logout bool NOT NULL DEFAULT 0,\
 sessioncookie INT NOT NULL DEFAULT 0,\
 FOREIGN KEY(userid) REFERENCES user(userid))")) {      

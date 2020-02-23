@@ -109,7 +109,7 @@ int main(int argc, const char* argv[], char* env[]) {
         executeQuery(query);
         char staticIpArduino[100];
         char queryStaticIpArduino[500];
-        sprintf(queryStaticIpArduino, "SELECT staticip FROM arduino WHERE arduinoid = '%s'", actuator.arduinoid);
+        sprintf(queryStaticIpArduino, "SELECT staticip FROM arduino WHERE arduinoid = '%d'", actuator.arduinoid);
         getOneRecordOneColumn(queryStaticIpArduino, staticIpArduino);
         pingArduino(staticIpArduino, actuator.arduinocomponentid);
 			} else {

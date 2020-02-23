@@ -6,7 +6,7 @@ echo Going to library dir
 cd ../cgi-bin/library
 
 echo compile all .c to  all .o
-gcc -c *.c $(mariadb_config --libs)  $(pkg-config --libs --cflags libcurl)
+gcc -c *.c $(mariadb_config --libs) $(pkg-config --libs --cflags libcurl)
 
 echo combining all .o to one .a
 ar -rc libdomoticati.a *.o
@@ -18,18 +18,19 @@ echo move to arduino dir
 cd ../arduino
 
 echo compile arduino controller
-gcc sensor.c -o sensor.cgi -L../library -ldomoticati $(mariadb_config --libs)
+gcc sensor.c -o sensor.cgi -L../library -ldomoticati $(mariadb_config --libs) $(pkg-config --libs --cflags libcurl)
+gcc actuator.c -o actuator.cgi -L../library -ldomoticati $(mariadb_config --libs) $(pkg-config --libs --cflags libcurl)
 
 
 echo move to api dir
 cd ../api
 
 echo compile c files
-gcc actuator.c -o actuator.cgi -L../library -ldomoticati $(mariadb_config --libs)
-gcc sensor.c -o sensor.cgi -L../library -ldomoticati $(mariadb_config --libs)
-gcc login.c -o login.cgi -L../library -ldomoticati $(mariadb_config --libs)
-gcc sensorHistory.c -o sensorHistory.cgi -L../library -ldomoticati $(mariadb_config --libs)
-gcc arduino.c -o arduino.cgi -L../library -ldomoticati $(mariadb_config --libs)
+gcc actuator.c -o actuator.cgi -L../library -ldomoticati $(mariadb_config --libs) $(pkg-config --libs --cflags libcurl)
+gcc sensor.c -o sensor.cgi -L../library -ldomoticati $(mariadb_config --libs) $(pkg-config --libs --cflags libcurl)
+gcc login.c -o login.cgi -L../library -ldomoticati $(mariadb_config --libs) $(pkg-config --libs --cflags libcurl)
+gcc sensorHistory.c -o sensorHistory.cgi -L../library -ldomoticati $(mariadb_config --libs) $(pkg-config --libs --cflags libcurl)
+gcc arduino.c -o arduino.cgi -L../library -ldomoticati $(mariadb_config --libs) $(pkg-config --libs --cflags libcurl)
 
 echo move to www/html
 cd ../../www/html

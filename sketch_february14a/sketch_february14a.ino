@@ -25,8 +25,11 @@ void dump_byte_array(byte *buffer, byte bufferSize);
 void getLOCValue();
 void setLOCDuration();
 void succesResponse(EthernetClient client);
+void setLOCValue(char*);
 
 void setup() {
+    pinMode(3, OUTPUT);
+    digitalWrite(3, HIGH);
     pinMode(6, OUTPUT);
     pinMode(7, OUTPUT);
 
@@ -52,6 +55,9 @@ void setup() {
     delay(500);
 
     mfrc522.PCD_Init();
+    digitalWrite(6,HIGH);
+    delay(750);
+    digitalWrite(6,LOW);
 }
 
 void loop() {
@@ -105,7 +111,7 @@ void loop() {
                                     succesResponse(client);
                                     break;
                                 } else if (strcmp(url, "LOC/duration") == 0) {
-                                    setLOCDuration();
+                                    //setLOCDuration();
                                     succesResponse(client);
                                     break;
                                 } else {
@@ -156,11 +162,31 @@ void loop() {
 
     int len = server_client.available();
     if (len > 0) {
-        byte buffer[80];
-        if (len > 80) len = 80;
+        char response[50] = "";
+        char buffer[250];
+        int i;
+        if (len > 250) len = 250;        
         server_client.read(buffer, len);
-        Serial.write("data: ");
-        Serial.write(buffer, len); // show in the serial monitor (slows some boards)
+        buffer[len] = '\0';
+        while (i <len) {
+            if(buffer[i] == '\n' && buffer[i+1] == '\r' && buffer[i+2] =='\n') {
+                i+=6;
+                Serial.print("data: ");
+                while(buffer[i] != '\n' || i <= len) {
+                    sprintf(response, "%s%c", response, buffer[i]);
+                    i++;
+                }
+                if(strncmp(response, "LOC", 3) == 0) {
+                    setLOCValue(response);
+                } else {
+                    Serial.print("NOT THE DATA: ");
+                    Serial.println(response);
+                }
+                break;
+            }
+            i++;
+        }
+        //Serial.print(buffer); // show in the serial monitor (slows some boards)
     }
 
     if(nextLDRTime < (unsigned int)millis() && ((unsigned int)millis() - nextLDRTime) < 2000) {
@@ -172,7 +198,7 @@ void loop() {
 
         char value[6];
         sprintf(value, "%d", analogRead(A0));
-        serverRequest(value, "POST /cgi-bin/arduino/sensor.cgi");
+        //serverRequest(value, "POST /cgi-bin/arduino/sensor.cgi");
     }
 
     if(nextKeyTime < (unsigned int)millis()) {
@@ -235,7 +261,9 @@ void serverRequest(char* data, char* url) {
         Serial.println("Connecting....");
         server_client.print(url);
         server_client.println(" HTTP/1.1");
-        server_client.println("HOST: 192.168.178.131:8081");
+        server_client.print("HOST: ");
+        server_client.print(serverip);
+        server_client.println(":8081");
         server_client.println("User-Agent: arduino-ethernet");
         server_client.println("Content-Type: text/html");
         server_client.println("Connection: close");
@@ -248,8 +276,20 @@ void serverRequest(char* data, char* url) {
     }
 }
 
+void setLOCValue(char* response) {
+    Serial.print("Data: ");
+    Serial.print(response);
+    int value = atoi(response+3);
+    Serial.print(", ");
+    Serial.print(value);
+    value = map(value, 0, 255, 1, 0);
+    Serial.print(", ");
+    Serial.println(value);
+    digitalWrite(3, value);
+}
+
 void getLOCValue() {
-    serverRequest("LOC", "GET /cgi-bin/api/arduino.cgi");
+    serverRequest("LOC", "GET /cgi-bin/arduino/actuator.cgi?LOC");
 }
 
 void setLOCDuration() {

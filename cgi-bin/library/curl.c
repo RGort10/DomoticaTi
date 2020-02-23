@@ -1,7 +1,12 @@
 #include "domoticaTi.h"
 
+size_t write_data(void *buffer, size_t size, size_t nmemb, void *userp)
+{
+   return size * nmemb;
+}
+
 int pingArduino(char* staticip, char* arduinoComponentId) {
-  int response
+  int response;
   CURL *curl = curl_easy_init();
   if(curl) {
     CURLcode res;
@@ -13,12 +18,12 @@ int pingArduino(char* staticip, char* arduinoComponentId) {
     if(res == CURLE_OK) {
       long response_code;
       curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &response_code);
-      response = (int)response_code
+      response = (int)response_code;
     } else {
       response = -1;
     }
     curl_easy_cleanup(curl);
   }
 
-  return response
+  return response;
 }
