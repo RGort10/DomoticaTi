@@ -123,7 +123,7 @@ int main(int argc, const char* argv[], char* env[]) {
           selectQueryJSON(query);
         }
     } else {
-      errorResponse(404, "url Not Found. Please check all parameters");
+      errorResponse(404, "URL Not Found. Please check all parameters");
     }
   } else {
     errorResponse(404, "URL Not found. Please check all parameters");
