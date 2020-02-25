@@ -1,0 +1,36 @@
+script(src="/js/components/modalEditSensor.js")
+
+.modal.fade#modalEditSensor(tabindex="-1" role="dialog" aria-labelledby="modalEditSensorLabel" aria-hidden="true")
+  .modal-dialog(role="document")
+    .modal-content
+      .modal-header
+        h5.modal-title#modalEditSensorLabel Edit Sensor 
+          span#modalEditSensor-sensorid
+        button.close(data-dismiss="modal" aria-label="Close" onclick="emptyEditSensorForm()")
+          i.fas.fa-times
+      
+      .modal-body
+        form(enctype="application/json")
+          .form-group
+            label Sensor Name
+            input.form-control#modalEditSensor-sensorname(type="text", name="sensorname" placeholder="Humidity Sensor")
+            .invalid-feedback Please check your sensor name
+        
+          .form-group
+            label Sensor Unit(type 'none' for no unit)
+            input.form-control#modalEditSensor-unit(type="text", name="unit" placeholder="%")
+            .invalid-feedback Please check your sensor unit
+
+          .form-group
+            label Arduino ID
+            input.form-control#modalEditSensor-arduinoid(type="number", name="arduinoid" placeholder="12")
+            .invalid-feedback Please check your Arduino ID
+
+          .form-group
+            label Arduino Component ID
+            input.form-control#modalEditSensor-arduinocomponentid(type="text", name="arduinocomponentid" placeholder="HUM")
+            .invalid-feedback Please check your Arduino Component ID
+            
+      .modal-footer
+        button.btn.btn-secondary(data-dismiss="modal" onclick="emptyEditSensorForm()") Cancel
+        button.btn.btn-primary(onclick="saveEditSensor()") Save Sensor

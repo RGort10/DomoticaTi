@@ -24,3 +24,25 @@ int getContentSize(char **env) {
   }
   return 0;
 }
+
+void getRemoteAddress(char** env, char* remoteAddress) {
+ int index = 0;
+  while(env[index] != NULL) {
+    if(strncmp(env[index], "REMOTE_ADDR=", 12) == 0) {
+      strncpy(remoteAddress, env[index]+12, 99);
+      break;
+    }
+    index++;
+  }
+}
+
+void getUserAgent(char** env, char* userAgent) {
+ int index = 0;
+  while(env[index] != NULL) {
+    if(strncmp(env[index], "HTTP_USER_AGENT=", 16) == 0) {
+      strncpy(userAgent, env[index]+16, 249);
+      break;
+    }
+    index++;
+  }
+}

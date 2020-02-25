@@ -1,0 +1,39 @@
+script(src="/js/components/modalSensor.js")
+link(rel="stylesheet", href="css/main.css")
+
+.modal.fade#modalSensor(tabindex="-1" role="dialog" aria-labelledby="modalSensorLabel" aria-hidden="true")
+  .modal-dialog(style="width: 90%; min-width: 400px; max-width: initial" role="document")
+    .modal-content    
+      .modal-body
+        button.close(data-dismiss="modal" aria-label="Close")
+          i.fas.fa-times
+        table.table.table-borderless
+          tbody.modalInfo
+            tr
+              th Name:
+              td#modalSensor-sensorname
+          
+            tr
+              th Unit:
+              td#modalSensor-unit
+            
+            tr
+              th Arduino ID:
+              td#modalSensor-arduinoid
+
+            tr
+              th Arduino Component ID:
+              td#modalSensor-arduinocomponentid
+            
+        
+        span 
+          strong Sensor History(Last 25 Records): 
+
+        table.table
+          thead.thead-dark
+            tr
+              th Date
+              th Time
+              th Value
+
+          tbody#modalSensorHistory

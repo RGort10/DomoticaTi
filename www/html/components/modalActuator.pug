@@ -1,0 +1,77 @@
+script(src="/js/components/modalActuator.js")
+link(rel="stylesheet", href="css/main.css")
+
+
+include modalActuator/modalEditActuator.pug
+include modalActuator/modalSettingsActuator.pug
+include modalActuator/modalNewActuator.pug
+include modalActuator/modalEditValueActuator.pug
+
+.modal.fade#modalActuator(tabindex="-1" role="dialog" aria-labelledby="modalActuatorLabel" aria-hidden="true")
+  .modal-dialog(style="width: 90%; min-width: 400px; max-width: initial" role="document")
+    .modal-content
+      .modal-body
+        button.close(data-dismiss="modal" aria-label="Close")
+          i.fas.fa-times
+        table.table.table-borderless
+          tbody.modalInfo
+            tr
+              th Name: 
+              td#modalActuator-actuatorname
+
+            tr
+              th Type: 
+              td#modalActuator-type
+            
+            tr
+              th Value: 
+              td#modalActuator-value 
+            
+            tr
+              th Auto:  
+              td#modalActuator-auto
+
+            tr
+              th Arduino ID: 
+              td#modalActuator-arduinoid
+
+            tr
+              th Arduino Component ID: 
+              td#modalActuator-arduinocomponentid
+            
+            tr
+              th Type Actuator: 
+              td#modalActuator-iopin
+            
+            tr
+              th Maximum Value: 
+              td#modalActuator-minimumvalue
+            
+            tr
+              th Minimum Value: 
+              td#modalActuator-maximumvalue
+            
+        button.btn.btn-danger.btnInline#modalActuator-deleteActuator
+          i.fas.fa-trash-alt  
+          span Delete
+        
+        button.btn.btn-primary.btnInline#modalActuator-editActuator
+          i.fas.fa-pencil-alt  
+          span Edit
+
+        button.btn.btn-primary.btnInline#modalActuator-settingsActuator
+          i.fas.fa-wrench  
+          span Settings
+
+        br
+        br
+
+        table.table
+          thead.thead-dark
+            tr
+              th Date
+              th Time
+              th Value
+              th By Who
+
+          tbody#modalActuatorHistory
