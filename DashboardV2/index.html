@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="includes/jquery-ui.min.css">
+    <link rel="stylesheet" type="text/css" href="includes/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+
+    <title>Hello, world!</title>
+  </head>
+
+  <body style="margin-right: 0px;">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+      <a class="navbar-brand">DomoticaTi</a>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="navbar-nav">
+            <a class="nav-item nav-link active" href="index.html">Dashboard</a>
+            <a class="nav-item nav-link" href="#">Actuators</a>
+            <a class="nav-item nav-link" href="#">Sensors</a>
+            <a class="nav-item nav-link" href="#">Arduinos</a>
+          </div>
+      </div>
+      <div class="dropdown">
+          <button class="btn btn-light dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown">User</button>
+          <div class="dropdown-menu dropdown-menu-right">
+            <a class="dropdown-item" onclick="logout()">Logout</a>
+            <a class="dropdown-item" href="#">Account Info</a>
+          </div>
+      </div>
+      <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation"><i class="fas fa-bars"></i></button>
+    </nav>
+
+    <div class="container-dashboard">
+      <div class="sidenav navbar-expand-md navbar-dark bg-dark">
+        <a class="nav-item nav-link active" href="index.html">Arduino #1</a> <!-- arduinoname -->
+        <a class="nav-item nav-link" href="#">Arduino #2</a> <!-- arduinoname -->
+        <a class="nav-item nav-link" href="#">Arduino #3</a> <!-- arduinoname -->
+      </div>
+
+      <div class="main">
+        <div class="col-sm-12">
+          <h1>Arduino #1</h1>
+        </div>
+        <hr>
+        <div class="row" style="height: 25vh;">
+          <div class="col-sm-4">
+            <canvas id="chart_1"></canvas>
+          </div>
+          <div class="col-sm-4">
+            <canvas id="chart_2"></canvas>
+          </div>
+          <div class="col-sm-4">
+            <canvas id="chart_3"></canvas>
+          </div>
+        </div>
+        <hr>  
+        <div class="row">
+          <div class="col-sm-12">
+            <h3 data-toggle="collapse" data-target="#acc-a" class="panel-heading">Actuators</h3>
+            <table class="table collapse" id="acc-a">
+              <thead class="thead-dark">
+                <tr>
+                  <th style="width: 5vw;" scope="col">ID</th> <!-- arduinocomponentid -->
+                  <th style="width: 15vw;" scope="col">Name</th> <!-- actuatorname -->
+                  <th scope="col">Current Value</th> <!-- value -->
+                  <th style="width: 10vw;" scope="col">Range</th> <!-- minimumvalue - maximumvalue -->
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">1</th>
+                  <td>Motor</td>
+                  <td>5</td>
+                  <td>0 - 255</td>
+                </tr>
+                <tr>
+                  <th scope="row">2</th>
+                  <td>Servo</td>
+                  <td>12</td>
+                  <td>0 - 255</td>
+                </tr>
+                <tr>
+                  <th scope="row">3</th>
+                  <td>LED</td>
+                  <td>0</td>
+                  <td>0 - 255</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col-sm-12">
+            <h3 data-toggle="collapse" data-target="#acc-ah" class="panel-heading">Actuator History</h3>
+            <table class="table collapse" id="acc-ah">
+              <thead class="thead-dark">
+                <tr>
+                  <th style="width: 5vw;" scope="col">ID</th> <!-- LISTID (NOT IN DB) -->
+                  <th style="width: 15vw;" scope="col">Name</th> <!-- actuatorname -->
+                  <th scope="col">Value</th> <!-- value -->
+                  <th style="width: 10vw;" scope="col">By</th> <!-- bywho -->
+                  <th style="width: 10vw;" scope="col">Date / Time</th> <!-- date / time -->
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">1</th>
+                  <td>Motor</td>
+                  <td>12</td>
+                  <td>Gort</td>
+                  <td>26/2/2020 14:20</td>
+                </tr>
+                <tr>
+                  <th scope="row">2</th>
+                  <td>Motor</td>
+                  <td>66</td>
+                  <td>Sloahhhh</td>
+                  <td>26/2/2020 14:16</td>
+                </tr>
+                <tr>
+                  <th scope="row">3</th>
+                  <td>Servo</td>
+                  <td>180</td>
+                  <td>Gort</td>
+                  <td>26/2/2020 11:43</td>
+                </tr>
+                <tr>
+                  <th scope="row">4</th>
+                  <td>Servo</td>
+                  <td>60</td>
+                  <td>Sneeuwpop</td>
+                  <td>26/2/2020 11:42</td>
+                </tr>
+                <tr>
+                  <th scope="row">5</th>
+                  <td>Servo</td>
+                  <td>25</td>
+                  <td>Sneeuwpop</td>
+                  <td>26/2/2020 11:42</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        
+        <hr>
+
+        <div class="row">
+
+          <div class="col-sm-12">
+            <h3 data-toggle="collapse" data-target="#acc-s" class="panel-heading">Sensors</h3>
+            <table class="table collapse" id="acc-s">
+              <thead class="thead-dark">
+                <tr>
+                  <th style="width: 5vw;" scope="col">ID</th> <!-- arduinocomponentid -->
+                  <th style="width: 15vw;" scope="col">Name</th> <!-- sensorname -->
+                  <th scope="col">Current Value</th> <!-- CURRENT VALUE BEING READ BY SENSOR ON LOADING PAGE -->
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">1</th>
+                  <td>Temperature</td>
+                  <td>21</td>
+                </tr>
+                <tr>
+                  <th scope="row">2</th>
+                  <td>Distance</td>
+                  <td>463</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="col-sm-12">
+            <h3 data-toggle="collapse" data-target="#acc-sh" class="panel-heading">Sensor History</h3>
+            <table class="table collapse" id="acc-sh">
+              <thead class="thead-dark">
+                <tr>
+                  <th style="width: 5vw;" scope="col">ID</th> <!-- LISTID (NOT IN DB) -->
+                  <th style="width: 15vw;" scope="col">Name</th> <!-- sensorname -->
+                  <th scope="col">Value</th> <!-- value -->
+                  <th style="width: 10vw;" scope="col">Date / Time</th> <!-- date / time -->
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">1</th>
+                  <td>Temperature</td>
+                  <td>20</td>
+                  <td>26/2/2020 13:42</td>
+                </tr>
+                <tr>
+                  <th scope="row">2</th>
+                  <td>Temperature</td>
+                  <td>19</td>
+                  <td>26/2/2020 13:41</td>
+                </tr>
+                <tr>
+                  <th scope="row">3</th>
+                  <td>Distance</td>
+                  <td>420</td>
+                  <td>26/2/2020 13:35</td>
+                </tr>
+                <tr>
+                  <th scope="row">4</th>
+                  <td>Temperature</td>
+                  <td>20</td>
+                  <td>26/2/2020 11:34</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <script src="includes/jquery-3.4.1.min.js"></script>
+    <script src="includes/jquery-ui.min.js"></script>
+    <script src="includes/bootstrap.min.js"></script>
+    <script src="includes/popper.js"></script>
+    <script src="includes/fontawesome.min.js"></script>
+    <script src="includes/chart.min.js"></script>
+    <script src="js/main.js"></script>
+
+  </body>
+</html>

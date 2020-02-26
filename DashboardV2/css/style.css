@@ -1,0 +1,43 @@
+.sidenav {
+    height: 100%;
+    width: 200px;
+    margin-top: 56px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    overflow-x: hidden;
+    padding-top: 20px;
+}
+
+.container-dashboard {
+    margin-top: 56px;
+}
+
+.sidenav a {
+    padding: 6px 6px 6px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+}
+
+.sidenav a:hover {
+    color: #f1f1f1;
+}
+
+.active {
+    color: #c1c1c1 !important;
+}
+
+.main {
+    margin-left: 200px;
+}
+
+.row {
+    padding: 25px;
+}
+
+.panel-heading {
+    cursor: pointer;
+}
