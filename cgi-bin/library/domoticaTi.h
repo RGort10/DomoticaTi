@@ -14,7 +14,7 @@
 
 void finish_with_error(MYSQL*);
 void errorResponse(int, char*);
-
+void successResponse();
 
 /**
  * db_JSON
@@ -42,6 +42,7 @@ void getMethod(char[], char**);
 int getContentSize(char**);
 void getRemoteAddress(char**, char*);
 void getUserAgent(char**, char*);
+int getSessionCookie(char **);
 
 /**
  * validation
@@ -57,9 +58,11 @@ void removeBadCharacters(char*);
 void getLoginNeeds(char**, char*, char*);
 int searchLoginSession(char*, char**, char*);
 int searchLogin(char**, char*);
+int searchUser(char**);
 
 /**
  * LibcURL 
 */
 
-int pingArduino(char*, char*);
+int pingArduino(char*);
+int pingArduinoComponent(char*, char*);

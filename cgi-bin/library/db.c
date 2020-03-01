@@ -72,7 +72,6 @@ int countRecords(char* query) {
   return atoi(row[0]);
 }
 
-
 void getOneRecordOneColumn(char* query, char* response) {
   int fieldCounter = 0, i = 0;
   MYSQL *con = mysql_init(NULL);

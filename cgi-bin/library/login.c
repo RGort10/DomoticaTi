@@ -26,6 +26,30 @@ int searchLoginSession(char* id, char** env, char* username) {
   return records;
 }
 
+int searchUser(char** env) {
+  char remoteAddress[100];
+  char userAgent[250];
+  char query[1000];
+  int id = getSessionCookie(env);
+  if(id) {
+    getLoginNeeds(env, remoteAddress, userAgent);
+
+    removeBadCharacters(remoteAddress);
+    removeBadCharacters(userAgent);
+
+    sprintf(query, "SELECT count(*) FROM usersessions WHERE sessioncookie = %d AND useragent = '%s' AND remoteaddress = '%s' AND time > NOW() - INTERVAL 24 HOUR AND logout = false", id, userAgent, remoteAddress);
+    int records = countRecords(query);
+    if(records > 0) {
+      sprintf(query, "SELECT accesslevel, username, email FROM user WHERE userid = ALL (SELECT userid FROM usersessions WHERE sessioncookie = %d AND useragent = '%s' AND remoteaddress = '%s' AND time > UNIX_TIMESTAMP() - 84600000 AND logout = false)", id, userAgent, remoteAddress);
+      selectQueryJSON(query);
+      return 1;
+    }
+    return -1;
+  } else {
+    return -1;
+  }
+}
+
 int searchLogin(char* env[], char* username) {
   int index = 0, loggedIn = 0;
   while(env[index] != NULL) {

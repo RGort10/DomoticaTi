@@ -25,6 +25,21 @@ int getContentSize(char **env) {
   return 0;
 }
 
+int getSessionCookie(char **env) {
+  int index = 0;
+  while(env[index] != NULL) {
+    if(strncmp(env[index], "HTTP_COOKIE=SESSIONID=", 22) == 0){
+      if(strlen(env[index]) > 22) {
+        return atoi(env[index]+22);
+      } else {
+        return -1;
+      }
+    }
+    index++;
+  }
+  return -1;
+}
+
 void getRemoteAddress(char** env, char* remoteAddress) {
  int index = 0;
   while(env[index] != NULL) {

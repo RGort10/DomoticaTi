@@ -4,7 +4,6 @@
 #include <time.h>
 #include <stdlib.h>
 
-void getLoginNeeds(char** env, char* remoteAddress, char* userAgent);
 void getLogin(char* email, char* password);
 
 
@@ -41,7 +40,8 @@ int main(int argc, const char* argv[], char* env[]) {
 
           sprintf(query, "SELECT userid FROM user WHERE email = '%s' AND password = '%s'", email, password);
           int userid = countRecords(query); // Dit is vies. TODO Make dedicated function
-          getLoginNeeds(env, remoteAddress, userAgent);
+          getRemoteAddress(env, remoteAddress);
+          getUserAgent(env, userAgent);
 
           sprintf(query, "INSERT INTO usersessions (userid, sessioncookie, remoteaddress, useragent) VALUES (%d, %d, '%s', '%s')", userid, sessionID, remoteAddress, userAgent);
           if(executeQueryNoOutput(query)) {
@@ -56,6 +56,10 @@ int main(int argc, const char* argv[], char* env[]) {
         errorResponse(400, "Please check everything!!");
       }
       
+    } else if(strcmp(METHOD, "GET") == 0) {
+      if(searchUser(env) < 0) {
+        errorResponse(401, "Not Logged in");
+      }
     } else {
       errorResponse(400, "check request method");
     }
@@ -95,20 +99,6 @@ long searchLoginCookie(char* env[]) {
     index++;
   }
   return -1;
-}
-
-void getLoginNeeds(char** env, char* remoteAddress, char* userAgent) {
-  int index = 0;
-  while(env[index] != NULL) {
-    if(strncmp(env[index], "REMOTE_ADDR=", 12) == 0) {
-      strncpy(remoteAddress, env[index]+12, 99);
-      removeBadCharacters(remoteAddress);
-    } else if (strncmp(env[index], "HTTP_USER_AGENT=", 16) == 0) {
-      strncpy(userAgent, env[index]+16, 249);
-      removeBadCharacters(userAgent);
-    }
-    index++;
-  }
 }
 
 void getLogin(char* email, char* password) {
