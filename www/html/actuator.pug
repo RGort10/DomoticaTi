@@ -1,0 +1,29 @@
+doctype
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    title DomoticaTi
+    include includes.pug
+
+  body(onload="init()")
+    include components/navbar.pug
+
+    button.btn.btn-dark(data-toggle="modal" data-target="#modalNewActuator") 
+      i.fas.fa-plus
+      span  New Actuator
+
+    include components/modalActuator.pug
+    
+    table.table.table-hover
+      thead.thead-dark
+        tr
+          th ID
+          th Actuator Name
+          th Value
+          th Type
+          th Action Type
+          th Auto
+          th ArduinoID
+          th Actions
+
+      tbody#actuatorTable

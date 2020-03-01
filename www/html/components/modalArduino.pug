@@ -1,0 +1,19 @@
+script(src="/js/components/modalArduino.js")
+link(rel="stylesheet", href="css/main.css")
+
+.modal.fade#modalArduino(tabindex="-1" role="dialog" aria-labelledby="modalArduinoLabel" aria-hidden="true")
+  .modal-dialog(style="width: 90%; min-width: 400px; max-width: initial" role="document")
+    .modal-content    
+      .modal-body
+        button.close(data-dismiss="modal" aria-label="Close")
+          i.fas.fa-times
+        table.table.table-borderless
+          tbody.modalInfo
+            tr
+              th Name:
+              td#modalArduino-arduinoname
+          
+            tr
+              th Static IPv4 address:
+              td#modalArduino-staticip
+            

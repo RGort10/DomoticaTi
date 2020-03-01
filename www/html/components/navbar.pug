@@ -1,0 +1,23 @@
+nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
+  a.navbar-brand DomoticaTi
+  .collapse.navbar-collapse#navbarNavAltMarkup
+    .navbar-nav
+      a.nav-item.nav-link(href="/index.html") Dashboard
+      a.nav-item.nav-link(href="/actuator.html") Actuators
+      a.nav-item.nav-link(href="/sensor.html") Sensors            
+      a.nav-item.nav-link(href="/arduino.html") Arduinos
+  
+  .dropdown
+    button.btn.btn-light.dropdown-toggle#dropdownMenuButton(data-toggle="dropdown") User
+    .dropdown-menu.dropdown-menu-right
+      a.dropdown-item(onclick="logout()") Logout
+      a.dropdown-item(href="#") Account Info
+  
+  button.navbar-toggler(
+    data-toggle="collapse" 
+    data-target="#navbarNavAltMarkup"
+    aria-controls="navbarNavAltMarkup" 
+    aria-expanded="false" 
+    aria-label="Toggle navigation"
+  )
+    i.fas.fa-bars

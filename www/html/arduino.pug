@@ -1,0 +1,28 @@
+doctype
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    title DomoticaTi
+    include includes.pug
+    script(src="/js/arduino.js")
+
+  body(onload="initArduino()")
+    include components/navbar.pug
+
+    include components/modalNewArduino.pug
+    button.btn.btn-dark(data-toggle="modal" data-target="#modalNewArduino") 
+      i.fas.fa-plus
+      span  New Arduino
+
+    include components/modalEditArduino.pug
+    include components/modalArduino.pug
+
+    table.table
+      thead.thead-dark
+        tr
+          th Arduino Id
+          th Arduino Name
+          th Static IP
+          th Actions
+
+      tbody#arduinoTable
