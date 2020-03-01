@@ -30,8 +30,9 @@ int selectQueryJSON(char*);
 void executeQuery(char*);
 int executeQueryNoOutput(char*);
 void getOneRecordOneColumn(char*, char*);
-int countRecords(char* query);
-int getUser(char* query, char* username);
+void getOneRecordTwoColumns(char*, char*, char*);
+int countRecords(char*);
+int getUser(char*, char*);
 
 /**
  * httpFunctions

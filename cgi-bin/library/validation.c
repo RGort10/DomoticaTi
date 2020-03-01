@@ -72,6 +72,14 @@ void removeBadCharacters(char* data) {
         case ':':
           *out++ = data[i];
         break;
+
+        case ']':
+          *out++ = data[i];
+        break;
+
+        case '[':
+          *out++ = data[i];
+        break;
             
         case ' ':
           *out++ = data[i];
