@@ -96,7 +96,7 @@ FOREIGN KEY(userid) REFERENCES user(userid))")) {
 actuatorid INT UNSIGNED NOT NULL,\
 hour TINYINT NOT NULL, \
 minute TINYINT NOT NULL, \
-day TINYINT NOT NULL, \
+day TINYINT UNSIGNED NOT NULL, \
 value INT NOT NULL, \
 FOREIGN KEY(actuatorid) REFERENCES actuator(actuatorid))")) {      
        finish_with_error(con);

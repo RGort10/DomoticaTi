@@ -10,9 +10,8 @@ struct cronjob readCronJobJSON();
 int CONTENT_SIZE = 0;
 
 int main(int argc, const char* argv[], char* env[]) {
-
   char username[100];
-  const int acceslevel = searchLogin(env, username);
+  //const int acceslevel = searchLogin(env, username);
 
 
   char METHOD[10];
@@ -29,9 +28,8 @@ int main(int argc, const char* argv[], char* env[]) {
     } else if(strcmp(METHOD, "POST") == 0) {
       struct cronjob cron;
       cron = readCronJobJSON();
-
       if(validateCronJob(cron) > 0) {
-        char* query = malloc(200);
+        char query[500];
         createInsertQueryCronJob(query, cron);
         executeQuery(query);
       } else {
@@ -41,8 +39,8 @@ int main(int argc, const char* argv[], char* env[]) {
     } else {  
       errorResponse(400, "check request url");
     }
-  } /*else if(argc == 2) { // one data
-    if(strcmp(METHOD, "DELETE") == 0) {
+  } else if(argc == 2) { // one data
+    /*if(strcmp(METHOD, "DELETE") == 0) {
 
       const char* actionid = argv[1];
 
@@ -55,15 +53,15 @@ int main(int argc, const char* argv[], char* env[]) {
         errorResponse(400, "validation vailed");
       }
 
-    } else if(strcmp(METHOD, "GET") == 0) {
+    } else*/ if(strcmp(METHOD, "GET") == 0) {
       const char* actionid = argv[1];
       if(atoi(actionid) != 0 && strlen(actionid) > 0) {
         char* query = malloc(150);
-        sprintf(query, "SELECT * FROM action WHERE actionid = %d", atoi(actionid));
+        sprintf(query, "SELECT * FROM cronjob WHERE actuatorid = %d", atoi(actionid));
         selectQueryJSON(query);
       }
 
-    } else if(strcmp(METHOD, "PUT") == 0) {
+    } /*else if(strcmp(METHOD, "PUT") == 0) {
       struct action action = readActionJSON();
 
       const char* actionid = argv[1];
@@ -73,10 +71,10 @@ int main(int argc, const char* argv[], char* env[]) {
         createUpdateQueryAction(query, action);
         executeQuery(query);
       }
-    } else {
+    }*/ else {
       errorResponse(400, "check request url");
     }
-  } else if(argc > 2) { // one redirect + 1 data
+  } /*else if(argc > 2) { // one redirect + 1 data
     if(strcmp(argv[1], "last") == 0) {
       if(strcmp(METHOD, "GET") == 0) {
         const char* actionid = argv[2];
@@ -106,7 +104,7 @@ int validateCronJob(struct cronjob cron) {
     strncpy(response[index][1], "true", 50);
   }
   
-  if(cron.actuatorid > 0) { //uncomment following piece when arduino table is active.
+  /*if(cron.actuatorid > 0) { //uncomment following piece when arduino table is active.
     char* query = malloc(500);
     sprintf(query, "SELECT count(*) FROM actuator WHERE actuatorid = %d", cron.actuatorid);
     if(!countRecords(query)) {
@@ -115,9 +113,9 @@ int validateCronJob(struct cronjob cron) {
     } else {
       char* minimumValue;
       char* maximumValue;
-      sprintf(query, "SELECT minimumvalue, maxiumvalue FROM actuator WHERE actuatorid = %d", cron.actuatorid);
+      sprintf(query, "SELECT minimumvalue, maximumvalue FROM actuator WHERE actuatorid = %d", cron.actuatorid);
       getOneRecordTwoColumns(query, minimumValue, maximumValue);
-      if(cron.value < atoi(minimumValue) || cron.value > atoi(maximumValue)) {
+      if(cron.value < (char)atoi(minimumValue) || cron.value > (char)atoi(maximumValue)) {
         strncpy(response[2][1], "false", 50);
         validation--;
       }
@@ -125,14 +123,14 @@ int validateCronJob(struct cronjob cron) {
   } else {
     strncpy(response[1][1], "false", 50);
     validation--;
-  }
+  }*/
 
   if(cron.day < 1) {
     strncpy(response[3][1], "false", 50);
     validation--;
   }
 
-  if(cron.hour < 0 || cron.value > 23) {
+  if(cron.hour < 0 || cron.hour > 23) {
     strncpy(response[4][1], "false", 50);
     validation--;
   }
@@ -160,10 +158,9 @@ void createInsertQueryCronJob(char* query, struct cronjob cron) {
   
   sprintf(query, "%s%d,", query, cron.actuatorid);
   sprintf(query, "%s%d,", query, cron.value);
-  sprintf(query, "%s%d,", query, cron.day);
-  sprintf(query, "%s%d,", query, cron.hour);
-  sprintf(query, "%s%d", query, cron.minute);
-  strcat(query, ")");
+  sprintf(query, "%s%hhu,", query, cron.day);
+  sprintf(query, "%s%hhi,", query, cron.hour);
+  sprintf(query, "%s%hhi)", query, cron.minute);
 }
 
 struct cronjob readCronJobJSON() {
@@ -171,7 +168,7 @@ struct cronjob readCronJobJSON() {
   
   char* data = malloc(CONTENT_SIZE+10);
   char index;
-  int dayValue = 0;
+  unsigned char dayValue = 0;
 
   fgets(data, CONTENT_SIZE, stdin);
   for(index = 0; index < CRONJOB_FIELDS; index++) {
@@ -201,7 +198,7 @@ struct cronjob readCronJobJSON() {
           char searchStringDay[50];
           sprintf(searchStringDay, "\"%s\"", CRONJOB_FIELD_DAY_OPTIONS[dayIndex]);
           char* dataPointerDay = strstr(retrievedData, searchStringDay);
-          if(dataPointer != NULL) {
+          if(dataPointerDay != NULL) {
             switch (dayIndex) {
             case 0:
               dayValue += 0b00000010;
@@ -252,11 +249,11 @@ struct cronjob readCronJobJSON() {
           break;
         
         case 4:
-          newCron.hour = atoi(retrievedData);
+          newCron.hour = (unsigned char)atoi(retrievedData);
           break;
         
         case 5:
-          newCron.minute = atoi(retrievedData);
+          newCron.minute = (unsigned char)atoi(retrievedData);
           break;
 
         

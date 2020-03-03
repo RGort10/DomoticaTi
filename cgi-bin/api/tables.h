@@ -68,7 +68,7 @@ struct cronjob
   unsigned int cronid;
   unsigned int actuatorid;
   int value;
-  char day;
-  char hour;
-  char minute;
+  unsigned char day;
+  unsigned char hour;
+  unsigned char minute;
 };
