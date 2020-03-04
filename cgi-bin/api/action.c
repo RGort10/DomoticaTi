@@ -40,20 +40,20 @@ int main(int argc, const char* argv[], char* env[]) {
       errorResponse(400, "check request url");
     }
   } else if(argc == 2) { // one data
-    /*if(strcmp(METHOD, "DELETE") == 0) {
+    if(strcmp(METHOD, "DELETE") == 0) {
 
       const char* actionid = argv[1];
 
       if(atoi(actionid) != 0 && strlen(actionid) > 0) {
         char* query = malloc(150);
-        sprintf(query, "DELETE FROM action WHERE actionid=%d", atoi(actionid));
+        sprintf(query, "DELETE FROM cronjob WHERE cronid=%d", atoi(actionid));
         executeQuery(query);
 
       } else {
         errorResponse(400, "validation vailed");
       }
 
-    } else*/ if(strcmp(METHOD, "GET") == 0) {
+    } else if(strcmp(METHOD, "GET") == 0) {
       const char* actionid = argv[1];
       if(atoi(actionid) != 0 && strlen(actionid) > 0) {
         char* query = malloc(150);
@@ -104,18 +104,18 @@ int validateCronJob(struct cronjob cron) {
     strncpy(response[index][1], "true", 50);
   }
   
-  /*if(cron.actuatorid > 0) { //uncomment following piece when arduino table is active.
+  if(cron.actuatorid > 0) {
     char* query = malloc(500);
     sprintf(query, "SELECT count(*) FROM actuator WHERE actuatorid = %d", cron.actuatorid);
     if(!countRecords(query)) {
       strncpy(response[1][1], "false", 50);
       validation--;
     } else {
-      char* minimumValue;
-      char* maximumValue;
+      char minimumValue[50];
+      char maximumValue[50];
       sprintf(query, "SELECT minimumvalue, maximumvalue FROM actuator WHERE actuatorid = %d", cron.actuatorid);
       getOneRecordTwoColumns(query, minimumValue, maximumValue);
-      if(cron.value < (char)atoi(minimumValue) || cron.value > (char)atoi(maximumValue)) {
+      if(cron.value < atoi(minimumValue) || cron.value > atoi(maximumValue)) {
         strncpy(response[2][1], "false", 50);
         validation--;
       }
@@ -123,7 +123,7 @@ int validateCronJob(struct cronjob cron) {
   } else {
     strncpy(response[1][1], "false", 50);
     validation--;
-  }*/
+  }
 
   if(cron.day < 1) {
     strncpy(response[3][1], "false", 50);

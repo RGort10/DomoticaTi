@@ -5,9 +5,6 @@
 #include <string.h>
 #include <time.h>
 
-
-#define ACCESLEVEL_DELETE 11
-
 /**
  * Error Response
 */

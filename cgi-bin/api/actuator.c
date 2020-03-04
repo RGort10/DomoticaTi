@@ -44,21 +44,16 @@ int main(int argc, const char* argv[], char* env[]) {
     }
   } else if(argc == 2) { // one data
     if(strcmp(METHOD, "DELETE") == 0) {
-      if(acceslevel >= ACCESLEVEL_DELETE) {
-        const char* actuatorid = argv[1];
+      const char* actuatorid = argv[1];
 
-        if(atoi(actuatorid) != 0 && strlen(actuatorid) > 0) {
-          char* query = malloc(150);
-          sprintf(query, "DELETE FROM actuator WHERE actuatorid=%d", atoi(actuatorid));
-          executeQuery(query);
+      if(atoi(actuatorid) != 0 && strlen(actuatorid) > 0) {
+        char* query = malloc(150);
+        sprintf(query, "DELETE FROM actuator WHERE actuatorid=%d", atoi(actuatorid));
+        executeQuery(query);
 
-        } else {
-          errorResponse(400, "validation vailed");
-        }
       } else {
-        errorResponse(455, "Unauthorized, Acceslevel Not High Enough!");
+        errorResponse(400, "validation vailed");
       }
-
     } else if(strcmp(METHOD, "GET") == 0) {
 			const char* actuatorid = argv[1];
       if(atoi(actuatorid) != 0 && strlen(actuatorid) > 0) {
