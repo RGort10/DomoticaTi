@@ -3,7 +3,7 @@ Description=UWSGI config service for project DOMOTICATI
 
 [Service]
 Type=simple
-ExecStart=uwsgi /mnt/d/Repos/DomoticaTi/config_files/uwsgi/uwsgi_config.ini
+ExecStart=uwsgi /mnt/d/Repos/DomoticaTi/config_files/uwsgi/uwsgi_arduino_config.ini
 
 [Install]
 WantedBy=multi-user.target
