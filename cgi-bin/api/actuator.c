@@ -44,21 +44,16 @@ int main(int argc, const char* argv[], char* env[]) {
     }
   } else if(argc == 2) { // one data
     if(strcmp(METHOD, "DELETE") == 0) {
-      if(acceslevel >= ACCESLEVEL_DELETE) {
-        const char* actuatorid = argv[1];
+      const char* actuatorid = argv[1];
 
-        if(atoi(actuatorid) != 0 && strlen(actuatorid) > 0) {
-          char* query = malloc(150);
-          sprintf(query, "DELETE FROM actuator WHERE actuatorid=%d", atoi(actuatorid));
-          executeQuery(query);
+      if(atoi(actuatorid) != 0 && strlen(actuatorid) > 0) {
+        char* query = malloc(150);
+        sprintf(query, "DELETE FROM actuator WHERE actuatorid=%d", atoi(actuatorid));
+        executeQuery(query);
 
-        } else {
-          errorResponse(400, "validation vailed");
-        }
       } else {
-        errorResponse(455, "Unauthorized, Acceslevel Not High Enough!");
+        errorResponse(400, "validation vailed");
       }
-
     } else if(strcmp(METHOD, "GET") == 0) {
 			const char* actuatorid = argv[1];
       if(atoi(actuatorid) != 0 && strlen(actuatorid) > 0) {
@@ -102,19 +97,25 @@ int main(int argc, const char* argv[], char* env[]) {
 
 			const char* actuatorid = argv[2];
       if(atoi(actuatorid) != 0 && strlen(actuatorid) > 0 && validateActuator(actuator) > 0 && validateActuatorSettings(actuator) > 0) {
-				actuator.actuatorid = atoi(actuatorid);
-				char* query = malloc(300);
-        actuatorHistory(username, actuator.actuatorid, actuator.value);
-        sprintf(query, "UPDATE actuator SET value = %d WHERE actuatorid = %d", actuator.value, actuator.actuatorid);
-        executeQuery(query);
         char staticIpArduino[100];
         char queryStaticIpArduino[500];
         sprintf(queryStaticIpArduino, "SELECT staticip FROM arduino WHERE arduinoid = '%d'", actuator.arduinoid);
         getOneRecordOneColumn(queryStaticIpArduino, staticIpArduino);
-        pingArduino(staticIpArduino, actuator.arduinocomponentid);
+        if(pingArduino(staticIpArduino) < 0) {
+          errorResponse(503, "Arduino Offline");
+        }
+				actuator.actuatorid = atoi(actuatorid);
+				char* query = malloc(300);
+        actuatorHistory(username, actuator.actuatorid, actuator.value);
+        sprintf(query, "UPDATE actuator SET value = %d WHERE actuatorid = %d", actuator.value, actuator.actuatorid);
+        executeQueryNoOutput(query);
+        if(pingArduinoComponent(staticIpArduino, actuator.arduinocomponentid) != 200) {
+          errorResponse(500, "something went wrong wile pinging the arduino With component");
+        } 
 			} else {
         errorResponse(400, "validation vailed");
       }
+      successResponse();
     } else if(strcmp(METHOD, "GET") == 0 && strcmp(argv[1], "last") == 0) {
       const char* actuatorid = argv[2];
         if(atoi(actuatorid) != 0 && strlen(actuatorid) > 0) {
@@ -123,7 +124,7 @@ int main(int argc, const char* argv[], char* env[]) {
           selectQueryJSON(query);
         }
     } else {
-      errorResponse(404, "URL Not Found. Please check all parameters");
+      errorResponse(404, "url Not Found. Please check all parameters");
     }
   } else {
     errorResponse(404, "URL Not found. Please check all parameters");

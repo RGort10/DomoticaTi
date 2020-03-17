@@ -90,6 +90,17 @@ sessioncookie INT NOT NULL DEFAULT 0,\
 FOREIGN KEY(userid) REFERENCES user(userid))")) {      
        finish_with_error(con);
   }
+
+  
+ if (mysql_query(con, "CREATE TABLE IF NOT EXISTS cronjob(cronid INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,\
+actuatorid INT UNSIGNED NOT NULL,\
+hour TINYINT UNSIGNEDNOT NULL, \
+minute TINYINT UNSIGNEDNOT NULL, \
+day TINYINT UNSIGNED NOT NULL, \
+value INT NOT NULL, \
+FOREIGN KEY(actuatorid) REFERENCES actuator(actuatorid))")) {      
+       finish_with_error(con);
+  }
   
 
   mysql_close(con);

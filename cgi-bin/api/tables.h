@@ -57,3 +57,18 @@ struct arduino
   char arduinoname[ARDUINO_FIELD_ARDUINONAME_SIZE];
   char staticip[ARDUINO_FIELD_STATICIP_SIZE];
 };
+
+const char CRONJOB_FIELD_NAMES[][30] = {"cronid", "actuatorid", "value", "day", "hour", "minute"};
+const char CRONJOB_FIELD_DAY_OPTIONS[][5] = {"Mo", "Tu", "We" ,"Th" ,"Fr" ,"Sa", "Su"};
+
+#define CRONJOB_FIELDS 6
+
+struct cronjob
+{
+  unsigned int cronid;
+  unsigned int actuatorid;
+  int value;
+  unsigned char day;
+  unsigned char hour;
+  unsigned char minute;
+};

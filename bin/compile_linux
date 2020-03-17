@@ -27,6 +27,7 @@ cd ../api
 
 echo compile c files
 gcc actuator.c -o actuator.cgi -L../library -ldomoticati $(mariadb_config --libs) $(pkg-config --libs --cflags libcurl)
+gcc action.c -o action.cgi -L../library -ldomoticati $(mariadb_config --libs) $(pkg-config --libs --cflags libcurl)
 gcc sensor.c -o sensor.cgi -L../library -ldomoticati $(mariadb_config --libs) $(pkg-config --libs --cflags libcurl)
 gcc login.c -o login.cgi -L../library -ldomoticati $(mariadb_config --libs) $(pkg-config --libs --cflags libcurl)
 gcc sensorHistory.c -o sensorHistory.cgi -L../library -ldomoticati $(mariadb_config --libs) $(pkg-config --libs --cflags libcurl)

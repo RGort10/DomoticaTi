@@ -14,8 +14,8 @@ bool switchedOFF = true;
 
 byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 
-IPAddress serverip(192, 168, 178, 213);
-IPAddress ip(192, 168, 178, 14);
+IPAddress serverip(10, 0, 0, 1);
+IPAddress ip(10, 0, 0, 2);
 
 EthernetClient server_client;
 EthernetServer server(80);
@@ -75,27 +75,6 @@ void loop() {
                 }
                 Serial.write(c);
 
-                if (c == '\n' && currentLineIsBlank) {
-                    // send a standard http response header
-                    client.println("HTTP/1.1 200 OK");
-                    client.println("Content-Type: text/html");
-                    client.println("Connection: close");  // the connection will be closed after completion of the response
-                    client.println("Refresh: 5");  // refresh the page automatically every 5 sec
-                    client.println();
-                    client.println("<!DOCTYPE HTML>");
-                    client.println("<html>");
-                    // output the value of each analog input pin
-                    for (int analogChannel = 0; analogChannel < 6; analogChannel++) {
-                        int sensorReading = analogRead(analogChannel);
-                        client.print("analog input ");
-                        client.print(analogChannel);
-                        client.print(" is ");
-                        client.print(sensorReading);
-                        client.println("<br />");
-                    }
-                    client.println("</html>");
-                    break;
-                }
                 if (c == '\n') {
                     if(strncmp(buffer, "GET /", 5) == 0) {
                         char* urlStart = strstr(buffer, "GET ") + 5;

@@ -4,23 +4,45 @@ RESPONSE is ALWAYS excluded from errors.
 
 # actuator
   # get
-    url:        /cgi-bin/api/actuator.cgi
-    response: {
-      actuatorid:
-      arduinoid:
-      value:
-      type:
-      arduinovalueid:
-      actuatorname:
-    }
+    1: 
+      url: actuator.cgi
+      response: all actuators
+    
+    2:
+      url: actuator.cgi?'id'
+      response: actuator with actuatorid == 'id'
+    
+    3: 
+      url: actuator.cgi?last+'id'
+      response: last 25 records of actuator with actuatorid == 'id'
 
   # post
-  ### You can have extra elements in your json object the api will simply not look at those. Just make sure you pass the required keys.
-    url:        /cgi-bin/api/actuator.cgi
-    data:       JSON --> See tables.h for wich elements. --> NO ID Otherwise validation fails.     
-    response:   {done: true}
+    1: 
+      url: actuator.cgi
+      data: JSON Object
+      response: error / {done: true}
+      error: JSON Object of key: true/false
+
+  # put
+    1: 
+      url: actuator.cgi?'id'
+      data: JSON Object
+      response: error / {done: true}
+      error: JSON Object of key: true/false
+    
+    2: 
+      url: actuator.cgi?settings+'id'
+      data: JSON Object
+      response: error / {done: true}
+      error: JSON Object of key: true/false
+
+    3: 
+      url: actuator.cgi?value+'id'
+      data: JSON Object
+      response: error / {done: true}
+      error: JSON Object of key: true/false
 
   # delete
-    url:        /cgi-bin/api/actuator.cgi?'id'
-    'id':       place the id that has to be removed here.
-    response:   {done: true} 
+    1: 
+      url: actuator.cgi?'id'
+      response: error / {done: true}

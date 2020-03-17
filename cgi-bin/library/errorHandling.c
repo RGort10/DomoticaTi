@@ -14,3 +14,8 @@ void errorResponse(int statusCode, char* message) {
   printf("{\"errorMessage\": \"%s\"}", message);
   exit(0);
 }
+
+void successResponse() {
+  printf("STATUS: 200\n");
+  exit(0);
+}

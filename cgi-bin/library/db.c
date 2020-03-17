@@ -104,6 +104,39 @@ void getOneRecordOneColumn(char* query, char* response) {
   mysql_close(con);
 }
 
+void getOneRecordTwoColumns(char* query, char* response, char* response2) {
+  int fieldCounter = 0, i = 0;
+  MYSQL *con = mysql_init(NULL);
+
+  if (con == NULL) {
+      errorResponse(500, "mysql_init() failed");
+  }  
+
+  if (mysql_real_connect(con, "localhost", "domoticati", "domoticati", "domoticati", 0, NULL, 0) == NULL) {
+      finish_with_error(con);
+  }    
+
+  if (mysql_query(con, query)) {  
+      finish_with_error(con);
+  }
+
+  MYSQL_RES *result = mysql_store_result(con);
+
+  if (result == NULL) {
+      finish_with_error(con);
+  }  
+
+  MYSQL_ROW row;
+  MYSQL_FIELD *field;
+
+  row = mysql_fetch_row(result);
+  sprintf(response, "%s", row[0]);
+  sprintf(response2, "%s", row[1]);
+  
+  mysql_free_result(result);
+  mysql_close(con);
+}
+
 int getUser(char* query, char* username) {
   int fieldCounter = 0, i = 0;
   MYSQL *con = mysql_init(NULL);

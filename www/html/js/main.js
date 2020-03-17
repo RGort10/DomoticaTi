@@ -39,7 +39,8 @@ function makeActuatorTable() {
       table +=`<td onclick="getModalActuator(${actuator.actuatorid})">${actuator.iopin === '1' ? 'I/O' : 'PWM'}</td>`
       table +=`<td onclick="getModalActuator(${actuator.actuatorid})"><button class="btn btn-circle btn-${actuator.auto === '1' ? 'success' : 'danger'}"></button></td>`
       table +=`<td onclick="getModalActuator(${actuator.actuatorid})">${actuator.arduinoid}</td>`
-			table +=`<td><button style="margin-right: 4px" class="btn btn-primary" onclick="editValueActuator(${actuator.actuatorid})" ${actuator.auto === '1' ? 'disabled title="Auto Mode is on"' : ''}><i class="fas fa-pencil-alt"></i> Change Value</button></td>`
+			table +=`<td><button style="margin-right: 4px" class="btn btn-primary" onclick="editValueActuator(${actuator.actuatorid})" ${actuator.auto === '1' ? 'disabled title="Auto Mode is on"' : ''}><i class="fas fa-pencil-alt"></i> Change Value</button>`
+			table +=`<button style="margin-right: 4px" class="btn btn-primary" onclick="editActionsActuator(${actuator.actuatorid})"><i class="fas fa-magic"></i> Actions</button></td>`
       table +='</tr>'
     })
     $("#actuatorTable").html(table)

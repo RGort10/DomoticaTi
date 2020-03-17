@@ -25,27 +25,18 @@ server {
 	#
 	# include snippets/snakeoil.conf;
 
-	root /mnt/d/Repos/DomoticaTi/www/html;
+	root $DomoticaTiRepoPath/www/html;
 
 	# Add index.php to the list if you are using PHP
 	index index.html index.htm index.nginx-debian.html;
 
 	server_name _;
 
-	
-	location / {
-    index index.nginx-debian.html;
-
-		# First attempt to serve request as file, then
-		# as directory, then fall back to the CMS.
-		try_files $uri $uri/index.html;
-	}
-
-  location /cgi-bin/ {
+  location /cgi-bin/arduino {
     include uwsgi_params;
 
     uwsgi_modifier1 9;
-    uwsgi_pass 127.0.0.1:9000;
+    uwsgi_pass 127.0.0.1:9001;
   }
 
 	# deny access to .htaccess files, if Apache's document root

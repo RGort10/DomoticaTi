@@ -1,6 +1,6 @@
 function saveSettingsActuator() {
   const actuatorBody = _.cloneDeep(localActuator)
-  actuatorBody.iopin = $(`#modalSettingsActuator-iopin`).prop("checked") ? '0' : '1' // +0 for false to 0 and true to 1
+  actuatorBody.iopin = $(`#modalSettingsActuator-iopin`).prop("checked") ? '1' : '0' // +0 for true to 1 and false to 0
   actuatorBody.minimumvalue = $(`#modalSettingsActuator-minimumvalue`).val()
   actuatorBody.maximumvalue = $(`#modalSettingsActuator-maximumvalue`).val()
   actuatorBody.value = actuatorBody.value == actuatorBody.maximumvalue ? actuatorBody.maximumvalue : actuatorBody.minimumvalue
@@ -37,7 +37,7 @@ function settingsActuator(id) {
       const actuator = data.data[0]
       console.log(actuator)
       $('#modalSettingsActuator').modal('toggle')
-			$(`#modalSettingsActuator-iopin`).prop("checked", actuator.iopin == '0')
+			$(`#modalSettingsActuator-iopin`).prop("checked", actuator.iopin == '1')
 			$(`#modalSettingsActuator-minimumvalue`).val(actuator.minimumvalue)
 			$(`#modalSettingsActuator-maximumvalue`).val(actuator.maximumvalue)
 		})
