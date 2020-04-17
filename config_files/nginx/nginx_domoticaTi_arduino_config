@@ -25,7 +25,7 @@ server {
 	#
 	# include snippets/snakeoil.conf;
 
-	root $DomoticaTiRepoPath/www/html;
+	root /home/pi/domoticati/www/html;
 
 	# Add index.php to the list if you are using PHP
 	index index.html index.htm index.nginx-debian.html;
@@ -36,7 +36,7 @@ server {
     include uwsgi_params;
 
     uwsgi_modifier1 9;
-    uwsgi_pass 127.0.0.1:9001;
+    uwsgi_pass 127.0.0.1:9000;
   }
 
 	# deny access to .htaccess files, if Apache's document root
